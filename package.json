@@ -1,4 +1,16 @@
 {
+  "name": "gifconverter",
+  "description": "convert gif with wasm",
+  "version": "1.0.0",
+  "main": "src/index.tsx",
+  "keywords": [
+    "gif",
+    "mp4",
+    "webm",
+    "wasm"
+  ],
+  "author": "Marshall K",
+  "license": "UNLICENSED",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
@@ -7,6 +19,8 @@
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "@ffmpeg/core": "^0.8.4",
+    "@ffmpeg/ffmpeg": "^0.9.5",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
