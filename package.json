@@ -11,6 +11,10 @@
   ],
   "author": "Marshall K",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marshall-ku/gifconverter.git"
+  },
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
