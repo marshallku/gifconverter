@@ -67,8 +67,6 @@ function App({}: AppProps) {
         } else {
             // convert mp4 to gif
 
-            //  ffmpeg -i input.mp4 -vf "fps=10,scale=320:-1:flags=lanczos" -c:v pam -f image2pipe - | convert -delay 10 - -loop 0 -layers optimize output.gif
-            // -filter_complex "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse"
             ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
             await ffmpeg.run(
                 "-f",
