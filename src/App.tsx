@@ -143,7 +143,9 @@ function App({}: AppProps) {
                 <Loader />
             ) : (
                 <div>
-                    <h2>Browser not supported 😥</h2>
+                    <h2 style={{ fontSize: "3rem" }}>
+                        Browser not supported 😥
+                    </h2>
                 </div>
             )}
         </>
