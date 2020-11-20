@@ -10,12 +10,11 @@ import DownloadButton from "./DownloadButton";
 
 declare global {
     interface Window {
-        ratio: number;
         displayProgress: React.Component;
     }
 }
 
-const ffmpeg: FFmpeg = createFFmpeg({ log: true, progress: progressRatio });
+const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
 
 function progressRatio(status: { ratio: number }) {
     window.displayProgress.setState({
