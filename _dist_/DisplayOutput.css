@@ -1,0 +1,4 @@
+.output {
+    max-width: 80vw;
+    max-height: calc(80vh - 5rem);
+}
