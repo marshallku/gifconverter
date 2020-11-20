@@ -1,8 +1,22 @@
 import React, { useState, useEffect } from "react";
+import DisplayProgress from "./DisplayProgress";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import "./App.css";
 
-const ffmpeg: FFmpeg = createFFmpeg({ log: true });
+declare global {
+    interface Window {
+        ratio: number;
+        displayProgress: React.Component;
+    }
+}
+
+const ffmpeg: FFmpeg = createFFmpeg({ log: true, progress: progressRatio });
+
+function progressRatio(status: { ratio: number }) {
+    window.displayProgress.setState({
+        ratio: status.ratio,
+    });
+}
 
 interface AppProps {}
 
@@ -112,6 +126,8 @@ function App({}: AppProps) {
                         onChange={handleChange}
                     />
                     <label htmlFor="file">UPLOAD</label>
+
+                    <DisplayProgress />
 
                     {input &&
                         output &&
