@@ -8,12 +8,6 @@ import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import "./App.css";
 import DownloadButton from "./DownloadButton";
 
-declare global {
-    interface Window {
-        displayProgress: React.Component;
-    }
-}
-
 const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
 
 function progressRatio(status: { ratio: number }) {
