@@ -117,7 +117,7 @@ function App({}: AppProps) {
     return (
         <>
             {ready ? (
-                <div>
+                <>
                     <input
                         type="file"
                         name=""
@@ -142,7 +142,7 @@ function App({}: AppProps) {
                                 loop
                             ></video>
                         ))}
-                </div>
+                </>
             ) : (
                 <div>Loading...</div>
             )}

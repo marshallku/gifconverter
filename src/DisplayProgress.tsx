@@ -17,7 +17,7 @@ export default class DisplayProgress extends React.Component<
     render() {
         const { ratio } = this.state;
         if (ratio && ratio !== 1) {
-            return <div>{Math.round(this.state.ratio * 100)}%</div>;
+            return <div>{Math.round(ratio * 100)}%</div>;
         } else {
             return null;
         }
