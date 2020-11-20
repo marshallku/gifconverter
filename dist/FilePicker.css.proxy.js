@@ -1,0 +1,11 @@
+// [snowpack] add styles to the page (skip if no document exists)
+if (typeof document !== 'undefined') {
+  const code = "@-webkit-keyframes shake {\r\n    0%,\r\n    100% {\r\n        -webkit-transform: translateX(0);\r\n        transform: translateX(0);\r\n    }\r\n    10%,\r\n    30%,\r\n    50%,\r\n    70% {\r\n        -webkit-transform: translateX(-10px);\r\n        transform: translateX(-10px);\r\n    }\r\n    20%,\r\n    40% {\r\n        -webkit-transform: translateX(10px);\r\n        transform: translateX(10px);\r\n    }\r\n    60% {\r\n        -webkit-transform: translateX(8px);\r\n        transform: translateX(8px);\r\n    }\r\n    80% {\r\n        -webkit-transform: translateX(6px);\r\n        transform: translateX(6px);\r\n    }\r\n    90% {\r\n        -webkit-transform: translateX(-6px);\r\n        transform: translateX(-6px);\r\n    }\r\n}\r\n\r\n@keyframes shake {\r\n    0%,\r\n    100% {\r\n        -webkit-transform: translateX(0);\r\n        transform: translateX(0);\r\n    }\r\n    10%,\r\n    30%,\r\n    50%,\r\n    70% {\r\n        -webkit-transform: translateX(-10px);\r\n        transform: translateX(-10px);\r\n    }\r\n    20%,\r\n    40% {\r\n        -webkit-transform: translateX(10px);\r\n        transform: translateX(10px);\r\n    }\r\n    60% {\r\n        -webkit-transform: translateX(8px);\r\n        transform: translateX(8px);\r\n    }\r\n    80% {\r\n        -webkit-transform: translateX(6px);\r\n        transform: translateX(6px);\r\n    }\r\n    90% {\r\n        -webkit-transform: translateX(-6px);\r\n        transform: translateX(-6px);\r\n    }\r\n}\r\n\r\n.file__label {\r\n    display: flex;\r\n    width: 300px;\r\n    height: 250px;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    border: 5px dashed #000;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n}\r\n\r\n.file__label.invalid {\r\n    border-color: #dc3545;\r\n    color: #dc3545;\r\n    -webkit-animation: shake 1s ease-in-out both;\r\n    animation: shake 1s ease-in-out both;\r\n}\r\n\r\n.file__label > div {\r\n    margin-top: 10px;\r\n}\r\n";
+
+  const styleEl = document.createElement("style");
+  const codeEl = document.createTextNode(code);
+  styleEl.type = 'text/css';
+
+  styleEl.appendChild(codeEl);
+  document.head.appendChild(styleEl);
+}
