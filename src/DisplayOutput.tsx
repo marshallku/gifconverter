@@ -13,9 +13,16 @@ export default class DisplayOutput extends React.Component<DisplayOutputProps> {
     render() {
         const { outputUrl, type } = this.props;
         return type !== "image/gif" ? (
-            <img src={outputUrl} />
+            <img className="output" src={outputUrl} />
         ) : (
-            <video src={outputUrl} autoPlay playsInline muted loop></video>
+            <video
+                className="output"
+                src={outputUrl}
+                autoPlay
+                playsInline
+                muted
+                loop
+            ></video>
         );
     }
 }
