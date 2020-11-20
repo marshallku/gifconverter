@@ -86,8 +86,8 @@ function App({}: AppProps) {
                 "input.mp4",
                 "-t",
                 "3",
-                "-ss",
-                "0.5",
+                "-loop",
+                "0",
                 "-filter_complex",
                 "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse",
                 "output.gif"
