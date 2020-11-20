@@ -10,9 +10,9 @@ export default class Loader extends React.Component {
                         cy="100"
                         r="80"
                         stroke="#f1718c"
-                        stroke-width="10"
+                        strokeWidth="10"
                         fill="transparent"
-                        stroke-dasharray="279"
+                        strokeDasharray="279"
                     />
                     <animateTransform
                         attributeType="xml"

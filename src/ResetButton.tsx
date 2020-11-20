@@ -27,17 +27,17 @@ export default class ResetButton extends React.Component<ResetButtonProps> {
                         points="176.167 99.716 224.167 99.716 224.167 51.716"
                         fill="none"
                         stroke="#000"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="24"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
                     />
                     <path
                         d="M190.2254,190.2254a88,88,0,1,1,0-124.4508l33.94112,33.94113"
                         fill="none"
                         stroke="#000"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="24"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
                     />
                 </svg>
                 Try another

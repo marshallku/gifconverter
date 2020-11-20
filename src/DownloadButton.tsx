@@ -26,9 +26,9 @@ export default class DownloadButton extends React.Component<
                         points="86 110 128 152 170 110"
                         fill="none"
                         stroke="#000"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="24"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
                     />
                     <line
                         x1="128"
@@ -37,17 +37,17 @@ export default class DownloadButton extends React.Component<
                         y2="151.97056"
                         fill="none"
                         stroke="#000"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="24"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
                     />
                     <path
                         d="M224,136v72a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V136"
                         fill="none"
                         stroke="#000"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="24"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
                     />
                 </svg>
                 Download
