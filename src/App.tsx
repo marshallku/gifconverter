@@ -76,7 +76,7 @@ function App() {
                 "-i",
                 "input.mp4",
                 "-t",
-                "3",
+                "10",
                 "-loop",
                 "0",
                 "-filter_complex",
