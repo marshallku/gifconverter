@@ -7,14 +7,14 @@ import Loader2 from "./Loader.js";
 import {createFFmpeg, fetchFile} from "../web_modules/@ffmpeg/ffmpeg.js";
 import "./App.css.proxy.js";
 import DownloadButton2 from "./DownloadButton.js";
-const ffmpeg2 = createFFmpeg({log: true, progress: progressRatio});
+const ffmpeg2 = createFFmpeg({progress: progressRatio});
 function progressRatio(status) {
   window.displayProgress.setState({
     ratio: status.ratio
   });
 }
-function App2({}) {
-  let loadable = !!window.SharedArrayBuffer;
+function App2() {
+  const loadable = !!window.SharedArrayBuffer;
   const [ready, setReady] = useState(false);
   const [input, setInput] = useState();
   const [output, setOutput] = useState("");
@@ -40,7 +40,7 @@ function App2({}) {
       setOutput(url);
     } else {
       ffmpeg2.FS("writeFile", "input.mp4", await fetchFile(file));
-      await ffmpeg2.run("-f", "mp4", "-i", "input.mp4", "-t", "3", "-loop", "0", "-filter_complex", "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse", "output.gif");
+      await ffmpeg2.run("-f", "mp4", "-i", "input.mp4", "-t", "10", "-loop", "0", "-filter_complex", "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse", "output.gif");
       const data = ffmpeg2.FS("readFile", "output.gif");
       const url = URL.createObjectURL(new Blob([data.buffer], {type: "image/gif"}));
       setOutput(url);
