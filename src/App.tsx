@@ -26,6 +26,7 @@ function progressRatio(status: { ratio: number }) {
 interface AppProps {}
 
 function App({}: AppProps) {
+    let loadable = !!window.SharedArrayBuffer;
     const [ready, setReady] = useState<boolean>(false);
     const [input, setInput] = useState<{
         file: File;
@@ -138,8 +139,12 @@ function App({}: AppProps) {
                         <FilePicker updateFile={updateFile} />
                     )}
                 </>
-            ) : (
+            ) : loadable ? (
                 <Loader />
+            ) : (
+                <div>
+                    <h2>Browser not supported 😥</h2>
+                </div>
             )}
         </>
     );
