@@ -67,6 +67,7 @@ export default class FilePicker extends React.Component<
 
     render() {
         const { displayInvalid } = this.state;
+
         return (
             <>
                 <input

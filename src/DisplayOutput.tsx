@@ -12,6 +12,7 @@ export default class DisplayOutput extends React.Component<DisplayOutputProps> {
 
     render() {
         const { outputUrl, type } = this.props;
+
         return type !== "image/gif" ? (
             <img className="output" src={outputUrl} />
         ) : (
