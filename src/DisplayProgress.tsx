@@ -1,12 +1,12 @@
 import React from "react";
 
-interface AppProps {}
+interface DisplayProgressProps {}
 
 export default class DisplayProgress extends React.Component<
-    AppProps,
+    DisplayProgressProps,
     { ratio: number }
 > {
-    constructor(props: AppProps) {
+    constructor(props: DisplayProgressProps) {
         super(props);
         window.displayProgress = this;
         this.state = {
@@ -16,10 +16,11 @@ export default class DisplayProgress extends React.Component<
 
     render() {
         const { ratio } = this.state;
+
         if (ratio && ratio !== 1) {
             return <div>{Math.round(ratio * 100)}%</div>;
         } else {
-            return null;
+            return <div>0%</div>;
         }
     }
 }

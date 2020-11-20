@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
+import FilePicker from "./FilePicker";
 import DisplayProgress from "./DisplayProgress";
+import DisplayOutput from "./DisplayOutput";
+import ResetButton from "./ResetButton";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import "./App.css";
 
@@ -106,6 +109,11 @@ function App({}: AppProps) {
         }
     };
 
+    const reset = () => {
+        setInput(undefined);
+        setOutput("");
+    };
+
     useEffect(() => {
         load();
     }, []);
@@ -118,30 +126,21 @@ function App({}: AppProps) {
         <>
             {ready ? (
                 <>
-                    <input
-                        type="file"
-                        name=""
-                        id="file"
-                        hidden
-                        onChange={handleChange}
-                    />
-                    <label htmlFor="file">UPLOAD</label>
-
-                    <DisplayProgress />
-
-                    {input &&
-                        output &&
-                        (input.type !== "image/gif" ? (
-                            <img src={output} />
+                    {input ? (
+                        output ? (
+                            <>
+                                <DisplayOutput
+                                    outputUrl={output}
+                                    type={input.type}
+                                />
+                                <ResetButton reset={reset} />
+                            </>
                         ) : (
-                            <video
-                                src={output}
-                                autoPlay
-                                playsInline
-                                muted
-                                loop
-                            ></video>
-                        ))}
+                            <DisplayProgress />
+                        )
+                    ) : (
+                        <FilePicker handleChange={handleChange} />
+                    )}
                 </>
             ) : (
                 <div>Loading...</div>
