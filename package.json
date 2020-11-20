@@ -1,6 +1,6 @@
 {
   "name": "gifconverter",
-  "description": "convert gif with wasm",
+  "description": "Convert GIF, MP4 with WASM",
   "version": "1.0.0",
   "main": "src/index.tsx",
   "keywords": [
@@ -19,7 +19,7 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
-    "deploy": "npm run build && gh-pages -d build",
+    "deploy": "npm run build && gh-pages -t true -d build",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
