@@ -3,8 +3,10 @@ import FilePicker from "./FilePicker";
 import DisplayProgress from "./DisplayProgress";
 import DisplayOutput from "./DisplayOutput";
 import ResetButton from "./ResetButton";
+import Loader from "./Loader";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import "./App.css";
+import DownloadButton from "./DownloadButton";
 
 declare global {
     interface Window {
@@ -133,7 +135,10 @@ function App({}: AppProps) {
                                     outputUrl={output}
                                     type={input.type}
                                 />
-                                <ResetButton reset={reset} />
+                                <div className="output__control">
+                                    <DownloadButton outputUrl={output} />
+                                    <ResetButton reset={reset} />
+                                </div>
                             </>
                         ) : (
                             <DisplayProgress />
