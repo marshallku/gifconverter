@@ -1,4 +1,6 @@
 import React from "react";
+import Loader from "./Loader";
+import "./DisplayProgress.css";
 
 interface DisplayProgressProps {}
 
@@ -17,10 +19,11 @@ export default class DisplayProgress extends React.Component<
     render() {
         const { ratio } = this.state;
 
-        if (ratio && ratio !== 1) {
-            return <div>{Math.round(ratio * 100)}%</div>;
-        } else {
-            return <div>0%</div>;
-        }
+        return (
+            <div className="progress">
+                <Loader />
+                <div>{Math.round(ratio * 100)} %</div>
+            </div>
+        );
     }
 }

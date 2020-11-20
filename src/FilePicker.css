@@ -1,0 +1,15 @@
+.file__label {
+    display: flex;
+    width: 300px;
+    height: 250px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 5px dashed #000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.file__label > div {
+    margin-top: 10px;
+}

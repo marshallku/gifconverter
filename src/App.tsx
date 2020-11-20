@@ -148,7 +148,7 @@ function App({}: AppProps) {
                     )}
                 </>
             ) : (
-                <div>Loading...</div>
+                <Loader />
             )}
         </>
     );
