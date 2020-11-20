@@ -1,3 +1,67 @@
+@-webkit-keyframes shake {
+    0%,
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70% {
+        -webkit-transform: translateX(-10px);
+        transform: translateX(-10px);
+    }
+    20%,
+    40% {
+        -webkit-transform: translateX(10px);
+        transform: translateX(10px);
+    }
+    60% {
+        -webkit-transform: translateX(8px);
+        transform: translateX(8px);
+    }
+    80% {
+        -webkit-transform: translateX(6px);
+        transform: translateX(6px);
+    }
+    90% {
+        -webkit-transform: translateX(-6px);
+        transform: translateX(-6px);
+    }
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70% {
+        -webkit-transform: translateX(-10px);
+        transform: translateX(-10px);
+    }
+    20%,
+    40% {
+        -webkit-transform: translateX(10px);
+        transform: translateX(10px);
+    }
+    60% {
+        -webkit-transform: translateX(8px);
+        transform: translateX(8px);
+    }
+    80% {
+        -webkit-transform: translateX(6px);
+        transform: translateX(6px);
+    }
+    90% {
+        -webkit-transform: translateX(-6px);
+        transform: translateX(-6px);
+    }
+}
+
 .file__label {
     display: flex;
     width: 300px;
@@ -8,6 +72,13 @@
     border: 5px dashed #000;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.file__label.invalid {
+    border-color: #dc3545;
+    color: #dc3545;
+    -webkit-animation: shake 1s ease-in-out both;
+    animation: shake 1s ease-in-out both;
 }
 
 .file__label > div {

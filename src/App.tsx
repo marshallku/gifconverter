@@ -38,20 +38,11 @@ function App({}: AppProps) {
         setReady(true);
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { files } = event.target;
-
-        if (files !== null && files[0]) {
-            const file = files[0];
-            const { type } = file;
-
-            if (type === "image/gif" || type === "video/mp4") {
-                setInput({
-                    file: files[0],
-                    type,
-                });
-            }
-        }
+    const updateFile = (file: File, type: string) => {
+        setInput({
+            file,
+            type,
+        });
     };
 
     const convertFile = async () => {
@@ -144,7 +135,7 @@ function App({}: AppProps) {
                             <DisplayProgress />
                         )
                     ) : (
-                        <FilePicker handleChange={handleChange} />
+                        <FilePicker updateFile={updateFile} />
                     )}
                 </>
             ) : (
