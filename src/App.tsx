@@ -23,7 +23,7 @@ function progressRatio(status: { ratio: number }) {
 }
 
 function App() {
-    let loadable = !!window.SharedArrayBuffer;
+    const loadable = !!window.SharedArrayBuffer;
     const [ready, setReady] = useState<boolean>(false);
     const [input, setInput] = useState<{
         file: File;
