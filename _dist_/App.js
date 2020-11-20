@@ -14,6 +14,7 @@ function progressRatio(status) {
   });
 }
 function App2({}) {
+  let loadable = !!window.SharedArrayBuffer;
   const [ready, setReady] = useState(false);
   const [input, setInput] = useState();
   const [output, setOutput] = useState("");
@@ -66,6 +67,8 @@ function App2({}) {
     reset
   }))) : /* @__PURE__ */ React.createElement(DisplayProgress2, null) : /* @__PURE__ */ React.createElement(FilePicker2, {
     updateFile
-  })) : /* @__PURE__ */ React.createElement(Loader2, null));
+  })) : loadable ? /* @__PURE__ */ React.createElement(Loader2, null) : /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h2", {
+    style: {fontSize: "3rem"}
+  }, "Browser not supported \u{1F625}")));
 }
 export default App2;
