@@ -1,5 +1,6 @@
 import React from "../web_modules/react.js";
-export default class DisplayOutput extends React.Component {
+import "./DisplayOutput.css.proxy.js";
+export default class DisplayOutput2 extends React.Component {
   constructor(props) {
     super(props);
   }
