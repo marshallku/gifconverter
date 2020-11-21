@@ -8,6 +8,11 @@ import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import "./App.css";
 import DownloadButton from "./DownloadButton";
 
+export interface Output {
+    blob: Blob;
+    url: string;
+}
+
 const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
 
 function progressRatio(status: { ratio: number }) {
@@ -23,7 +28,7 @@ function App() {
         file: File;
         type: string;
     }>();
-    const [output, setOutput] = useState<string>("");
+    const [output, setOutput] = useState<Output>();
 
     const load = async () => {
         await ffmpeg.load();
@@ -60,12 +65,13 @@ function App() {
             );
 
             const data = ffmpeg.FS("readFile", "output.mp4");
+            const blob = new Blob([data.buffer], { type: "video/mp4" });
+            const url = URL.createObjectURL(blob);
 
-            const url = URL.createObjectURL(
-                new Blob([data.buffer], { type: "video/mp4" })
-            );
-
-            setOutput(url);
+            setOutput({
+                blob,
+                url,
+            });
         } else {
             // convert mp4 to gif
 
@@ -85,18 +91,19 @@ function App() {
             );
 
             const data = ffmpeg.FS("readFile", "output.gif");
+            const blob = new Blob([data.buffer], { type: "image/gif" });
+            const url = URL.createObjectURL(blob);
 
-            const url = URL.createObjectURL(
-                new Blob([data.buffer], { type: "image/gif" })
-            );
-
-            setOutput(url);
+            setOutput({
+                blob,
+                url,
+            });
         }
     };
 
     const reset = () => {
         setInput(undefined);
-        setOutput("");
+        setOutput(undefined);
     };
 
     useEffect(() => {
@@ -115,11 +122,11 @@ function App() {
                         output ? (
                             <>
                                 <DisplayOutput
-                                    outputUrl={output}
+                                    output={output}
                                     type={input.type}
                                 />
                                 <div className="output__control">
-                                    <DownloadButton outputUrl={output} />
+                                    <DownloadButton outputUrl={output.url} />
                                     <ResetButton reset={reset} />
                                 </div>
                             </>
