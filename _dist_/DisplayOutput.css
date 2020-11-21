@@ -1,4 +1,11 @@
 .output {
+    display: block;
+    margin: 0;
+}
+
+.output__file {
+    display: block;
     max-width: 80vw;
     max-height: calc(80vh - 5rem);
+    margin-bottom: 10px;
 }
