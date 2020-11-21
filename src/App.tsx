@@ -121,10 +121,7 @@ function App() {
                     {input ? (
                         output ? (
                             <>
-                                <DisplayOutput
-                                    output={output}
-                                    type={input.type}
-                                />
+                                <DisplayOutput output={output} />
                                 <div className="output__control">
                                     <DownloadButton outputUrl={output.url} />
                                     <ResetButton reset={reset} />

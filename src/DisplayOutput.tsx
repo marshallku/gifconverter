@@ -3,7 +3,6 @@ import type { Output } from "./App";
 import "./DisplayOutput.css";
 
 interface DisplayOutputProps {
-    type: string;
     output: Output;
 }
 
@@ -26,24 +25,25 @@ export default class DisplayOutput extends React.Component<DisplayOutputProps> {
     }
 
     render() {
-        const { output, type } = this.props;
+        const { output } = this.props;
+        const { blob, url } = output;
 
-        return type !== "image/gif" ? (
+        return blob.type === "image/gif" ? (
             <figure className="output">
-                <img className="output__file" src={output.url} />
-                <figcaption>{this.convertData(output.blob.size)}</figcaption>
+                <img className="output__file" src={url} />
+                <figcaption>{this.convertData(blob.size)}</figcaption>
             </figure>
         ) : (
             <figure className="output">
                 <video
                     className="output__file"
-                    src={output.url}
+                    src={url}
                     autoPlay
                     playsInline
                     muted
                     loop
                 ></video>
-                <figcaption>{this.convertData(output.blob.size)}</figcaption>
+                <figcaption>{this.convertData(blob.size)}</figcaption>
             </figure>
         );
     }
