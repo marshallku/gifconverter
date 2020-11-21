@@ -1,4 +1,5 @@
 import React from "react";
+import "./DisplayOutput.css";
 
 interface DisplayOutputProps {
     type: string;
