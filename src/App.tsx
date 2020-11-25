@@ -4,16 +4,23 @@ import DisplayProgress from "./DisplayProgress";
 import DisplayOutput from "./DisplayOutput";
 import ResetButton from "./ResetButton";
 import Loader from "./Loader";
+import DownloadButton from "./DownloadButton";
+import ConvertOptions from "./ConvertOptions";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import "./App.css";
-import DownloadButton from "./DownloadButton";
 
 export interface Output {
     blob: Blob;
     url: string;
 }
 
-const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
+export interface GifOption {
+    t: string;
+    scale: string;
+    fps: string;
+}
+
+const ffmpeg: FFmpeg = createFFmpeg({ log: true, progress: progressRatio });
 
 function progressRatio(status: { ratio: number }) {
     window.displayProgress.setState({
@@ -29,6 +36,12 @@ function App() {
         type: string;
     }>();
     const [output, setOutput] = useState<Output>();
+    const [converting, setConverting] = useState<boolean>(false);
+    const [gifOption, setGifOption] = useState<GifOption>({
+        t: "10",
+        scale: "0",
+        fps: "30",
+    });
 
     const load = async () => {
         await ffmpeg.load();
@@ -36,6 +49,7 @@ function App() {
     };
 
     const updateFile = (file: File, type: string) => {
+        console.log(file);
         setInput({
             file,
             type,
@@ -74,6 +88,7 @@ function App() {
             });
         } else {
             // convert mp4 to gif
+            const { t, scale, fps } = gifOption;
 
             ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
             await ffmpeg.run(
@@ -86,8 +101,10 @@ function App() {
                 "-loop",
                 "0",
                 "-filter_complex",
-                "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse",
-                "output.gif"
+                `fps=${fps},scale=${scale}:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse`,
+                "output.gif",
+                "-pix_fmt",
+                "rgb24"
             );
 
             const data = ffmpeg.FS("readFile", "output.gif");
@@ -98,6 +115,7 @@ function App() {
                 blob,
                 url,
             });
+            setConverting(false);
         }
     };
 
@@ -111,7 +129,9 @@ function App() {
     }, []);
 
     useEffect(() => {
-        convertFile();
+        if (input && input.type !== "video/mp4") {
+            convertFile();
+        }
     }, [input]);
 
     return (
@@ -127,6 +147,18 @@ function App() {
                                     <ResetButton reset={reset} />
                                 </div>
                             </>
+                        ) : input.type === "video/mp4" ? (
+                            converting ? (
+                                <DisplayProgress />
+                            ) : (
+                                <ConvertOptions
+                                    input={input.file}
+                                    preConvert={setConverting}
+                                    convert={convertFile}
+                                    gifOption={gifOption}
+                                    setGifOption={setGifOption}
+                                />
+                            )
                         ) : (
                             <DisplayProgress />
                         )
