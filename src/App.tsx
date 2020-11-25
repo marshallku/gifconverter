@@ -20,7 +20,7 @@ export interface GifOption {
     fps: string;
 }
 
-const ffmpeg: FFmpeg = createFFmpeg({ log: true, progress: progressRatio });
+const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
 
 function progressRatio(status: { ratio: number }) {
     window.displayProgress.setState({
@@ -49,7 +49,6 @@ function App() {
     };
 
     const updateFile = (file: File, type: string) => {
-        console.log(file);
         setInput({
             file,
             type,
@@ -143,7 +142,11 @@ function App() {
                             <>
                                 <DisplayOutput output={output} />
                                 <div className="output__control">
-                                    <DownloadButton outputUrl={output.url} />
+                                    <DownloadButton
+                                        fileName={input.file.name}
+                                        fileExtension={input.file.type}
+                                        outputUrl={output.url}
+                                    />
                                     <ResetButton reset={reset} />
                                 </div>
                             </>

@@ -54,7 +54,6 @@ export default class ConvertOptions extends React.Component<
 
     updateFps = (string: string) => {
         this.options.fps = string;
-        console.log(string);
     };
 
     updateScale = (string: string) => {
@@ -69,7 +68,6 @@ export default class ConvertOptions extends React.Component<
         });
 
         setTimeout(() => {
-            console.log(this.options);
             this.props.preConvert(true);
             this.props.convert();
         }, 0);

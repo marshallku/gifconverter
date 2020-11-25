@@ -2,18 +2,30 @@ import React from "react";
 import "./DownloadButton.css";
 
 interface DownloadButtonProps {
+    fileName: string;
+    fileExtension: string;
     outputUrl: string;
 }
 
 export default class DownloadButton extends React.Component<
     DownloadButtonProps
 > {
+    formatFileName = () => {
+        let { fileName } = this.props;
+        const outputExtension =
+            this.props.fileExtension === "image/gif" ? "mp4" : "gif";
+        fileName = fileName.replace(/\..(gif|mp4)/, "");
+        fileName = `${fileName}.${outputExtension}`;
+
+        return fileName;
+    };
+
     render() {
         return (
             <a
                 className="output__control__download button"
                 href={this.props.outputUrl}
-                download
+                download={this.formatFileName()}
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
