@@ -40,7 +40,7 @@ function App() {
     const [gifOption, setGifOption] = useState<GifOption>({
         t: "10",
         scale: "0",
-        fps: "30",
+        fps: "25",
     });
 
     const load = async () => {
