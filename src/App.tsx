@@ -46,8 +46,10 @@ function App() {
     });
 
     const load = async () => {
-        await ffmpeg.load();
-        setReady(true);
+        if (loadable) {
+            await ffmpeg.load();
+            setReady(true);
+        }
     };
 
     const updateFile = (file: File, type: string) => {
