@@ -15,7 +15,8 @@ export interface Output {
 }
 
 export interface GifOption {
-    t: string;
+    startTime: string;
+    endTime: string;
     scale: string;
     fps: string;
 }
@@ -38,7 +39,8 @@ function App() {
     const [output, setOutput] = useState<Output>();
     const [converting, setConverting] = useState<boolean>(false);
     const [gifOption, setGifOption] = useState<GifOption>({
-        t: "10",
+        startTime: "0",
+        endTime: "0",
         scale: "0",
         fps: "25",
     });
@@ -87,7 +89,7 @@ function App() {
             });
         } else {
             // convert mp4 to gif
-            const { t, scale, fps } = gifOption;
+            const { startTime, endTime, scale, fps } = gifOption;
 
             ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
             await ffmpeg.run(
@@ -95,8 +97,10 @@ function App() {
                 "mp4",
                 "-i",
                 "input.mp4",
+                `${startTime ? "-ss" : ""}`,
+                `${startTime ? startTime : ""}`,
                 "-t",
-                "10",
+                `${endTime ? endTime : "10"}`,
                 "-loop",
                 "0",
                 "-filter_complex",
@@ -119,6 +123,12 @@ function App() {
     };
 
     const reset = () => {
+        setGifOption({
+            startTime: "0",
+            endTime: "0",
+            scale: "0",
+            fps: "25",
+        });
         setInput(undefined);
         setOutput(undefined);
     };
