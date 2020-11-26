@@ -1,11 +1,21 @@
 import React from "../web_modules/react.js";
 import "./DownloadButton.css.proxy.js";
 export default class DownloadButton2 extends React.Component {
+  constructor() {
+    super(...arguments);
+    this.formatFileName = () => {
+      let {fileName} = this.props;
+      const outputExtension = this.props.fileExtension === "image/gif" ? "mp4" : "gif";
+      fileName = fileName.replace(/\..(gif|mp4)/, "");
+      fileName = `${fileName}.${outputExtension}`;
+      return fileName;
+    };
+  }
   render() {
     return /* @__PURE__ */ React.createElement("a", {
       className: "output__control__download button",
       href: this.props.outputUrl,
-      download: true
+      download: this.formatFileName()
     }, /* @__PURE__ */ React.createElement("svg", {
       xmlns: "http://www.w3.org/2000/svg",
       viewBox: "0 0 256 256",

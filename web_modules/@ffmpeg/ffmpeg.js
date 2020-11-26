@@ -1135,35 +1135,31 @@ void (function(root, factory) {
 }));
 });
 
-const _args = [
-  [
-    "@ffmpeg/ffmpeg@0.9.5",
-    "C:\\Users\\Marshall\\Desktop\\　\\홈페이지\\gifconverter"
-  ]
-];
-const _from = "@ffmpeg/ffmpeg@0.9.5";
-const _id = "@ffmpeg/ffmpeg@0.9.5";
+const _from = "@ffmpeg/ffmpeg@0.9.6";
+const _id = "@ffmpeg/ffmpeg@0.9.6";
 const _inBundle = false;
-const _integrity = "sha512-Vtxgi5C89n36pJ3I1/l6xd2qSwn+s1tAtLvFJ98N9P2ZorBvxXCEwTkt2yL7GuOUX9wpdG/vLFqp7iLso8LDwg==";
+const _integrity = "sha512-ov5FAV3dHRJ/+ZxQH9V5GvY/iczwq5vrKWeu4tpytxZewTSAhZ1aKD/sFBzd79nQNF+CTktxUp3LWuGECXBNeA==";
 const _location = "/@ffmpeg/ffmpeg";
 const _phantomChildren = {
 };
 const _requested = {
   type: "version",
   registry: true,
-  raw: "@ffmpeg/ffmpeg@0.9.5",
+  raw: "@ffmpeg/ffmpeg@0.9.6",
   name: "@ffmpeg/ffmpeg",
   escapedName: "@ffmpeg%2fffmpeg",
   scope: "@ffmpeg",
-  rawSpec: "0.9.5",
+  rawSpec: "0.9.6",
   saveSpec: null,
-  fetchSpec: "0.9.5"
+  fetchSpec: "0.9.6"
 };
 const _requiredBy = [
+  "#USER",
   "/"
 ];
-const _resolved = "https://registry.npmjs.org/@ffmpeg/ffmpeg/-/ffmpeg-0.9.5.tgz";
-const _spec = "0.9.5";
+const _resolved = "https://registry.npmjs.org/@ffmpeg/ffmpeg/-/ffmpeg-0.9.6.tgz";
+const _shasum = "b44fa1ab34dd860785bb7c317dbfbe8b9ded7036";
+const _spec = "@ffmpeg/ffmpeg@0.9.6";
 const _where = "C:\\Users\\Marshall\\Desktop\\　\\홈페이지\\gifconverter";
 const author = {
   name: "Jerome Wu",
@@ -1175,17 +1171,19 @@ const browser$1 = {
 const bugs = {
   url: "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
 };
+const bundleDependencies = false;
 const dependencies = {
   "is-url": "^1.2.4",
   "node-fetch": "^2.6.1",
   "regenerator-runtime": "^0.13.7",
   "resolve-url": "^0.2.1"
 };
+const deprecated = false;
 const description = "FFmpeg WebAssembly version";
 const devDependencies = {
   "@babel/core": "^7.12.3",
   "@babel/preset-env": "^7.12.1",
-  "@ffmpeg/core": "^0.8.4",
+  "@ffmpeg/core": "^0.8.5",
   "@types/emscripten": "^1.39.4",
   "babel-loader": "^8.1.0",
   chai: "^4.2.0",
@@ -1235,9 +1233,8 @@ const scripts = {
   wait: "rimraf dist && wait-on http://localhost:3000/dist/ffmpeg.dev.js"
 };
 const types = "src/index.d.ts";
-const version$1 = "0.9.5";
+const version$1 = "0.9.6";
 var require$$3 = {
-  _args: _args,
   _from: _from,
   _id: _id,
   _inBundle: _inBundle,
@@ -1247,12 +1244,15 @@ var require$$3 = {
   _requested: _requested,
   _requiredBy: _requiredBy,
   _resolved: _resolved,
+  _shasum: _shasum,
   _spec: _spec,
   _where: _where,
   author: author,
   browser: browser$1,
   bugs: bugs,
+  bundleDependencies: bundleDependencies,
   dependencies: dependencies,
+  deprecated: deprecated,
   description: description,
   devDependencies: devDependencies,
   directories: directories,
@@ -1279,22 +1279,53 @@ var defaultOptions = {
     : `https://unpkg.com/@ffmpeg/core@${devDependencies$1['@ffmpeg/core'].substring(1)}/dist/ffmpeg-core.js`,
 };
 
+/* eslint-disable no-undef */
+
 const { log: log$1 } = log_1;
 
+/*
+ * Fetch data from remote URL and convert to blob URL
+ * to avoid CORS issue
+ */
+const toBlobURL = async (url, mimeType) => {
+  log$1('info', `fetch ${url}`);
+  const buf = await (await fetch(url)).arrayBuffer();
+  log$1('info', `${url} file size = ${buf.byteLength} bytes`);
+  const blob = new Blob([buf], { type: mimeType });
+  const blobURL = URL.createObjectURL(blob);
+  log$1('info', `${url} blob URL = ${blobURL}`);
+  return blobURL;
+};
+
 var getCreateFFmpegCore = async ({ corePath: _corePath }) => {
-  if (typeof window.createFFmpegCore === 'undefined') {
-    log$1('info', 'fetch ffmpeg-core.worker.js script');
-    const corePath = resolveUrl(_corePath);
-    const workerBlob = await (await fetch(corePath.replace('ffmpeg-core.js', 'ffmpeg-core.worker.js'))).blob();
-    window.FFMPEG_CORE_WORKER_SCRIPT = URL.createObjectURL(workerBlob);
-    log$1('info', `worker object URL=${window.FFMPEG_CORE_WORKER_SCRIPT}`);
-    log$1('info', `download ffmpeg-core script (~25 MB) from ${corePath}`);
+  if (typeof _corePath !== 'string') {
+    throw Error('corePath should be a string!');
+  }
+  const coreRemotePath = resolveUrl(_corePath);
+  const corePath = await toBlobURL(
+    coreRemotePath,
+    'application/javascript',
+  );
+  const wasmPath = await toBlobURL(
+    coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.wasm'),
+    'application/wasm',
+  );
+  const workerPath = await toBlobURL(
+    coreRemotePath.replace('ffmpeg-core.js', 'ffmpeg-core.worker.js'),
+    'application/javascript',
+  );
+  if (typeof createFFmpegCore === 'undefined') {
     return new Promise((resolve) => {
       const script = document.createElement('script');
       const eventHandler = () => {
         script.removeEventListener('load', eventHandler);
-        log$1('info', 'initialize ffmpeg-core');
-        resolve(window.createFFmpegCore);
+        log$1('info', 'ffmpeg-core.js script loaded');
+        resolve({
+          createFFmpegCore,
+          corePath,
+          wasmPath,
+          workerPath,
+        });
       };
       script.src = corePath;
       script.type = 'text/javascript';
@@ -1302,8 +1333,13 @@ var getCreateFFmpegCore = async ({ corePath: _corePath }) => {
       document.getElementsByTagName('head')[0].appendChild(script);
     });
   }
-  log$1('info', 'ffmpeg-core is loaded already');
-  return Promise.resolve(window.createFFmpegCore);
+  log$1('info', 'ffmpeg-core.js script is loaded already');
+  return Promise.resolve({
+    createFFmpegCore,
+    corePath,
+    wasmPath,
+    workerPath,
+  });
 };
 
 const readFromBlobOrFile = (blob) => (
@@ -1403,15 +1439,39 @@ var createFFmpeg = (_options = {}) => {
     log$2('info', 'load ffmpeg-core');
     if (Core === null) {
       log$2('info', 'loading ffmpeg-core');
-      const createFFmpegCore = await getCreateFFmpegCore$1(options);
+      /*
+       * In node environment, all paths are undefined as there
+       * is no need to set them.
+       */
+      const {
+        createFFmpegCore,
+        corePath,
+        workerPath,
+        wasmPath,
+      } = await getCreateFFmpegCore$1(options);
       Core = await createFFmpegCore({
+        /*
+         * Assign mainScriptUrlOrBlob fixes chrome extension web worker issue
+         * as there is no document.currentScript in the context of content_scripts
+         */
+        mainScriptUrlOrBlob: corePath,
         printErr: (message) => parseMessage({ type: 'fferr', message }),
         print: (message) => parseMessage({ type: 'ffout', message }),
+        /*
+         * locateFile overrides paths of files that is loaded by main script (ffmpeg-core.js).
+         * It is critical for browser environment and we override both wasm and worker paths
+         * as we are using blob URL instead of original URL to avoid cross origin issues.
+         */
         locateFile: (path, prefix) => {
-          if (typeof window !== 'undefined'
-            && typeof window.FFMPEG_CORE_WORKER_SCRIPT !== 'undefined'
-            && path.endsWith('ffmpeg-core.worker.js')) {
-            return window.FFMPEG_CORE_WORKER_SCRIPT;
+          if (typeof window !== 'undefined') {
+            if (typeof wasmPath !== 'undefined'
+              && path.endsWith('ffmpeg-core.wasm')) {
+              return wasmPath;
+            }
+            if (typeof workerPath !== 'undefined'
+              && path.endsWith('ffmpeg-core.worker.js')) {
+              return workerPath;
+            }
           }
           return prefix + path;
         },

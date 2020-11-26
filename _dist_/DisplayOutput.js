@@ -16,21 +16,22 @@ export default class DisplayOutput2 extends React.Component {
     }
   }
   render() {
-    const {output, type} = this.props;
-    return type !== "image/gif" ? /* @__PURE__ */ React.createElement("figure", {
+    const {output} = this.props;
+    const {blob, url} = output;
+    return blob.type === "image/gif" ? /* @__PURE__ */ React.createElement("figure", {
       className: "output"
     }, /* @__PURE__ */ React.createElement("img", {
       className: "output__file",
-      src: output.url
-    }), /* @__PURE__ */ React.createElement("figcaption", null, this.convertData(output.blob.size))) : /* @__PURE__ */ React.createElement("figure", {
+      src: url
+    }), /* @__PURE__ */ React.createElement("figcaption", null, this.convertData(blob.size))) : /* @__PURE__ */ React.createElement("figure", {
       className: "output"
     }, /* @__PURE__ */ React.createElement("video", {
       className: "output__file",
-      src: output.url,
+      src: url,
       autoPlay: true,
       playsInline: true,
       muted: true,
       loop: true
-    }), /* @__PURE__ */ React.createElement("figcaption", null, this.convertData(output.blob.size)));
+    }), /* @__PURE__ */ React.createElement("figcaption", null, this.convertData(blob.size)));
   }
 }
