@@ -3,10 +3,20 @@ body {
     height: 100%;
 }
 
+html::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+    z-index: -1;
+}
+
 body {
     margin: 0;
     font-family: "Anton", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
 }
