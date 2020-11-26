@@ -1,4 +1,5 @@
 import React from "../web_modules/react.js";
+import Loader2 from "./Loader.js";
 import "./ConvertOptions.css.proxy.js";
 class OptionInput extends React.Component {
   constructor(props) {
@@ -69,7 +70,7 @@ export default class ConvertOptions2 extends React.Component {
   }
   render() {
     const {startTime, endTime, fps, scale} = this.options;
-    return /* @__PURE__ */ React.createElement("div", {
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, this.state.videoMounted || /* @__PURE__ */ React.createElement(Loader2, null), /* @__PURE__ */ React.createElement("div", {
       className: `${this.state.videoMounted ? "loaded " : ""}option`
     }, /* @__PURE__ */ React.createElement("div", {
       className: "option__preview"
@@ -148,6 +149,6 @@ export default class ConvertOptions2 extends React.Component {
       strokeLinecap: "round",
       strokeLinejoin: "round",
       strokeWidth: "24"
-    })))));
+    }))))));
   }
 }
