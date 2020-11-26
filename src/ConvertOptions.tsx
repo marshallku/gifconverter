@@ -1,4 +1,5 @@
 import React from "react";
+import Loader from "./Loader";
 import type { GifOption } from "./App";
 import "./ConvertOptions.css";
 
@@ -113,104 +114,113 @@ export default class ConvertOptions extends React.Component<
         const { startTime, endTime, fps, scale } = this.options;
 
         return (
-            <div
-                className={`${this.state.videoMounted ? "loaded " : ""}option`}
-            >
-                <div className="option__preview">
-                    <video
-                        src={URL.createObjectURL(this.props.input)}
-                        onTimeUpdate={this.handleVideoLoad}
-                        autoPlay
-                        playsInline
-                        muted
-                        loop
-                    ></video>
+            <>
+                {this.state.videoMounted || <Loader />}
+                <div
+                    className={`${
+                        this.state.videoMounted ? "loaded " : ""
+                    }option`}
+                >
+                    <div className="option__preview">
+                        <video
+                            src={URL.createObjectURL(this.props.input)}
+                            onTimeUpdate={this.handleVideoLoad}
+                            autoPlay
+                            playsInline
+                            muted
+                            loop
+                        ></video>
+                    </div>
+                    {this.state.videoMounted && (
+                        <>
+                            <div className="option__input">
+                                <div>Start</div>
+                                <OptionInput
+                                    value={startTime}
+                                    min="0"
+                                    max={endTime}
+                                    option="startTime"
+                                    onUpdate={this.updateOption}
+                                />
+                            </div>
+                            <div className="option__input">
+                                <div>End</div>
+                                <OptionInput
+                                    value={endTime}
+                                    min="0"
+                                    max={endTime}
+                                    option="endTime"
+                                    onUpdate={this.updateOption}
+                                />
+                            </div>
+                            <div className="option__input">
+                                <div>FPS</div>
+                                <OptionInput
+                                    min="1"
+                                    value={fps}
+                                    option="fps"
+                                    onUpdate={this.updateOption}
+                                />
+                            </div>
+                            <div className="option__input">
+                                <div>Size (width)</div>
+                                <OptionInput
+                                    min="1"
+                                    value={scale}
+                                    max={scale}
+                                    option="scale"
+                                    onUpdate={this.updateOption}
+                                />
+                            </div>
+                            <div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="30"
+                                    height="30"
+                                    viewBox="0 0 256 256"
+                                    className="option__convert"
+                                    onClick={this.convert}
+                                >
+                                    <rect
+                                        width="256"
+                                        height="256"
+                                        fill="none"
+                                    />
+                                    <circle
+                                        cx="128"
+                                        cy="128"
+                                        r="96"
+                                        fill="none"
+                                        stroke="#000"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="24"
+                                    />
+                                    <polyline
+                                        points="134.059 161.941 168 128 134.059 94.059"
+                                        fill="none"
+                                        stroke="#000"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="24"
+                                    />
+                                    <line
+                                        x1="88"
+                                        y1="128"
+                                        x2="168"
+                                        y2="128"
+                                        fill="none"
+                                        stroke="#000"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="24"
+                                    />
+                                </svg>
+                            </div>
+                        </>
+                    )}
                 </div>
-                {this.state.videoMounted && (
-                    <>
-                        <div className="option__input">
-                            <div>Start</div>
-                            <OptionInput
-                                value={startTime}
-                                min="0"
-                                max={endTime}
-                                option="startTime"
-                                onUpdate={this.updateOption}
-                            />
-                        </div>
-                        <div className="option__input">
-                            <div>End</div>
-                            <OptionInput
-                                value={endTime}
-                                min="0"
-                                max={endTime}
-                                option="endTime"
-                                onUpdate={this.updateOption}
-                            />
-                        </div>
-                        <div className="option__input">
-                            <div>FPS</div>
-                            <OptionInput
-                                min="1"
-                                value={fps}
-                                option="fps"
-                                onUpdate={this.updateOption}
-                            />
-                        </div>
-                        <div className="option__input">
-                            <div>Size (width)</div>
-                            <OptionInput
-                                min="1"
-                                value={scale}
-                                max={scale}
-                                option="scale"
-                                onUpdate={this.updateOption}
-                            />
-                        </div>
-                        <div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="30"
-                                height="30"
-                                viewBox="0 0 256 256"
-                                className="option__convert"
-                                onClick={this.convert}
-                            >
-                                <rect width="256" height="256" fill="none" />
-                                <circle
-                                    cx="128"
-                                    cy="128"
-                                    r="96"
-                                    fill="none"
-                                    stroke="#000"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="24"
-                                />
-                                <polyline
-                                    points="134.059 161.941 168 128 134.059 94.059"
-                                    fill="none"
-                                    stroke="#000"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="24"
-                                />
-                                <line
-                                    x1="88"
-                                    y1="128"
-                                    x2="168"
-                                    y2="128"
-                                    fill="none"
-                                    stroke="#000"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="24"
-                                />
-                            </svg>
-                        </div>
-                    </>
-                )}
-            </div>
+            </>
         );
     }
 }
