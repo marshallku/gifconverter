@@ -27,8 +27,10 @@ function App2() {
     fps: "25"
   });
   const load = async () => {
-    await ffmpeg2.load();
-    setReady(true);
+    if (loadable) {
+      await ffmpeg2.load();
+      setReady(true);
+    }
   };
   const updateFile = (file, type) => {
     setInput({
