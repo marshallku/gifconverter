@@ -3,6 +3,22 @@
     position: absolute;
 }
 
+.option button {
+    border: 0;
+    padding: 0;
+    background: 0;
+    outline: 0;
+    cursor: pointer;
+}
+
+.option button:focus svg * {
+    stroke: #fff;
+}
+
+.option button:focus:not(:focus-visible) svg * {
+    stroke: #000;
+}
+
 .option__preview {
     margin-bottom: 1rem;
 }
@@ -18,7 +34,7 @@
     margin: 0 auto 0.8rem auto;
 }
 
-.option__input > div {
+.option__input > .title {
     text-align: left;
     font-size: 0.55rem;
     padding: 0 5px;
@@ -26,7 +42,11 @@
     line-height: 0.7rem;
 }
 
-.option__input > input {
+.option__input > div {
+    display: flex;
+}
+
+.option__input > div > input {
     width: 100%;
     background: 0;
     border: 0;
@@ -40,6 +60,16 @@
     transition: background 0.25s;
 }
 
+.option__input button {
+    padding: 0;
+    margin-left: 10px;
+}
+
+.option__input svg {
+    width: 1rem;
+    height: 1rem;
+}
+
 .option__input > input:focus {
     background: rgba(255, 255, 255, 0.4);
 }
@@ -47,5 +77,4 @@
 .option__convert {
     display: block;
     margin: 0 auto;
-    cursor: pointer;
 }

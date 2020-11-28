@@ -11,32 +11,64 @@ class OptionInput extends React.Component {
       });
       this.props.onUpdate(this.props.option, value);
     };
+    this.handleClick = () => {
+      const {video} = this.props;
+      if (video) {
+        const {currentTime} = video;
+        this.setState({
+          value: `${currentTime}`
+        });
+        this.props.onUpdate(this.props.option, `${currentTime}`);
+      }
+    };
     this.state = {
       value: this.props.value
     };
   }
   render() {
-    return /* @__PURE__ */ React.createElement("input", {
+    const {video} = this.props;
+    return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("input", {
       type: "number",
       min: this.props.min,
       max: this.props.max ? this.props.max : "",
       value: this.state.value,
       onChange: this.handleChange,
       step: `${this.props.option.includes("Time") ? 0.01 : 1}`
-    });
+    }), !!video && /* @__PURE__ */ React.createElement("button", {
+      onClick: this.handleClick,
+      title: "Current Time"
+    }, /* @__PURE__ */ React.createElement("svg", {
+      viewBox: "0 0 256 256"
+    }, /* @__PURE__ */ React.createElement("circle", {
+      cx: "128",
+      cy: "128",
+      r: "96",
+      fill: "none",
+      stroke: "#000",
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      strokeWidth: "24"
+    }), /* @__PURE__ */ React.createElement("polyline", {
+      points: "128 72 128 128 184 128",
+      fill: "none",
+      stroke: "#000",
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      strokeWidth: "24"
+    }))));
   }
 }
 export default class ConvertOptions2 extends React.Component {
   constructor(props) {
     super(props);
     this.handleVideoLoad = (event) => {
-      if (this.state.videoMounted)
+      if (this.state.video)
         return;
       const video = event.target;
       this.options.endTime = `${video.duration}`;
       this.options.scale = `${video.offsetWidth}`;
       this.setState({
-        videoMounted: true
+        video
       });
     };
     this.updateOption = (option, value) => {
@@ -65,65 +97,72 @@ export default class ConvertOptions2 extends React.Component {
       scale: gifOption.scale
     };
     this.state = {
-      videoMounted: false
+      video: null
     };
   }
   render() {
     const {startTime, endTime, fps, scale} = this.options;
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, this.state.videoMounted || /* @__PURE__ */ React.createElement(Loader2, null), /* @__PURE__ */ React.createElement("div", {
-      className: `${this.state.videoMounted ? "loaded " : ""}option`
+    const {video} = this.state;
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, !!this.state.video || /* @__PURE__ */ React.createElement(Loader2, null), /* @__PURE__ */ React.createElement("div", {
+      className: `${this.state.video ? "loaded " : ""}option`
     }, /* @__PURE__ */ React.createElement("div", {
       className: "option__preview"
     }, /* @__PURE__ */ React.createElement("video", {
       src: URL.createObjectURL(this.props.input),
-      onTimeUpdate: this.handleVideoLoad,
+      onLoadedMetadata: this.handleVideoLoad,
       autoPlay: true,
       playsInline: true,
       muted: true,
-      loop: true
-    })), this.state.videoMounted && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", {
+      loop: true,
+      controls: true
+    })), !!video && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", {
       className: "option__input"
-    }, /* @__PURE__ */ React.createElement("div", null, "Start"), /* @__PURE__ */ React.createElement(OptionInput, {
+    }, /* @__PURE__ */ React.createElement("div", {
+      className: "title"
+    }, "Start"), /* @__PURE__ */ React.createElement(OptionInput, {
       value: startTime,
       min: "0",
       max: endTime,
       option: "startTime",
-      onUpdate: this.updateOption
+      onUpdate: this.updateOption,
+      video
     })), /* @__PURE__ */ React.createElement("div", {
       className: "option__input"
-    }, /* @__PURE__ */ React.createElement("div", null, "End"), /* @__PURE__ */ React.createElement(OptionInput, {
+    }, /* @__PURE__ */ React.createElement("div", {
+      className: "title"
+    }, "End"), /* @__PURE__ */ React.createElement(OptionInput, {
       value: endTime,
       min: "0",
       max: endTime,
       option: "endTime",
-      onUpdate: this.updateOption
+      onUpdate: this.updateOption,
+      video
     })), /* @__PURE__ */ React.createElement("div", {
       className: "option__input"
-    }, /* @__PURE__ */ React.createElement("div", null, "FPS"), /* @__PURE__ */ React.createElement(OptionInput, {
+    }, /* @__PURE__ */ React.createElement("div", {
+      className: "title"
+    }, "FPS"), /* @__PURE__ */ React.createElement(OptionInput, {
       min: "1",
       value: fps,
       option: "fps",
       onUpdate: this.updateOption
     })), /* @__PURE__ */ React.createElement("div", {
       className: "option__input"
-    }, /* @__PURE__ */ React.createElement("div", null, "Size (width)"), /* @__PURE__ */ React.createElement(OptionInput, {
+    }, /* @__PURE__ */ React.createElement("div", {
+      className: "title"
+    }, "Size (width)"), /* @__PURE__ */ React.createElement(OptionInput, {
       min: "1",
       value: scale,
       max: scale,
       option: "scale",
       onUpdate: this.updateOption
-    })), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("svg", {
-      xmlns: "http://www.w3.org/2000/svg",
+    })), /* @__PURE__ */ React.createElement("button", null, /* @__PURE__ */ React.createElement("svg", {
       width: "30",
       height: "30",
       viewBox: "0 0 256 256",
       className: "option__convert",
       onClick: this.convert
-    }, /* @__PURE__ */ React.createElement("rect", {
-      width: "256",
-      height: "256",
-      fill: "none"
-    }), /* @__PURE__ */ React.createElement("circle", {
+    }, /* @__PURE__ */ React.createElement("circle", {
       cx: "128",
       cy: "128",
       r: "96",
