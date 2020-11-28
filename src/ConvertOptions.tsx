@@ -19,6 +19,7 @@ interface OptionInputProps {
     onUpdate: (optionName: optionNames, value: string) => void;
     min: string;
     max?: string;
+    video?: HTMLVideoElement;
 }
 
 class OptionInput extends React.Component<OptionInputProps, { value: string }> {
@@ -38,23 +39,63 @@ class OptionInput extends React.Component<OptionInputProps, { value: string }> {
         this.props.onUpdate(this.props.option, value);
     };
 
+    handleClick = () => {
+        const { video } = this.props;
+
+        if (video) {
+            const { currentTime } = video;
+
+            this.setState({
+                value: `${currentTime}`,
+            });
+            this.props.onUpdate(this.props.option, `${currentTime}`);
+        }
+    };
+
     render() {
+        const { video } = this.props;
         return (
-            <input
-                type="number"
-                min={this.props.min}
-                max={this.props.max ? this.props.max : ""}
-                value={this.state.value}
-                onChange={this.handleChange}
-                step={`${this.props.option.includes("Time") ? 0.01 : 1}`}
-            />
+            <div>
+                <input
+                    type="number"
+                    min={this.props.min}
+                    max={this.props.max ? this.props.max : ""}
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                    step={`${this.props.option.includes("Time") ? 0.01 : 1}`}
+                />
+                {!!video && (
+                    <button onClick={this.handleClick} title="Current Time">
+                        <svg viewBox="0 0 256 256">
+                            <circle
+                                cx="128"
+                                cy="128"
+                                r="96"
+                                fill="none"
+                                stroke="#000"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="24"
+                            />
+                            <polyline
+                                points="128 72 128 128 184 128"
+                                fill="none"
+                                stroke="#000"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="24"
+                            />
+                        </svg>
+                    </button>
+                )}
+            </div>
         );
     }
 }
 
 export default class ConvertOptions extends React.Component<
     ConvertOptionsProps,
-    { videoMounted: boolean }
+    { video: HTMLVideoElement | null }
 > {
     options: GifOption;
     constructor(props: ConvertOptionsProps) {
@@ -70,21 +111,21 @@ export default class ConvertOptions extends React.Component<
         };
 
         this.state = {
-            videoMounted: false,
+            video: null,
         };
     }
 
     handleVideoLoad = (
         event: React.SyntheticEvent<HTMLVideoElement, Event>
     ) => {
-        if (this.state.videoMounted) return;
+        if (this.state.video) return;
         const video = event.target as HTMLVideoElement;
 
         this.options.endTime = `${video.duration}`;
         this.options.scale = `${video.offsetWidth}`;
 
         this.setState({
-            videoMounted: true,
+            video: video,
         });
     };
 
@@ -112,49 +153,49 @@ export default class ConvertOptions extends React.Component<
 
     render() {
         const { startTime, endTime, fps, scale } = this.options;
+        const { video } = this.state;
 
         return (
             <>
-                {this.state.videoMounted || <Loader />}
-                <div
-                    className={`${
-                        this.state.videoMounted ? "loaded " : ""
-                    }option`}
-                >
+                {!!this.state.video || <Loader />}
+                <div className={`${this.state.video ? "loaded " : ""}option`}>
                     <div className="option__preview">
                         <video
                             src={URL.createObjectURL(this.props.input)}
-                            onTimeUpdate={this.handleVideoLoad}
+                            onLoadedMetadata={this.handleVideoLoad}
                             autoPlay
                             playsInline
                             muted
                             loop
+                            controls
                         ></video>
                     </div>
-                    {this.state.videoMounted && (
+                    {!!video && (
                         <>
                             <div className="option__input">
-                                <div>Start</div>
+                                <div className="title">Start</div>
                                 <OptionInput
                                     value={startTime}
                                     min="0"
                                     max={endTime}
                                     option="startTime"
                                     onUpdate={this.updateOption}
+                                    video={video}
                                 />
                             </div>
                             <div className="option__input">
-                                <div>End</div>
+                                <div className="title">End</div>
                                 <OptionInput
                                     value={endTime}
                                     min="0"
                                     max={endTime}
                                     option="endTime"
                                     onUpdate={this.updateOption}
+                                    video={video}
                                 />
                             </div>
                             <div className="option__input">
-                                <div>FPS</div>
+                                <div className="title">FPS</div>
                                 <OptionInput
                                     min="1"
                                     value={fps}
@@ -163,7 +204,7 @@ export default class ConvertOptions extends React.Component<
                                 />
                             </div>
                             <div className="option__input">
-                                <div>Size (width)</div>
+                                <div className="title">Size (width)</div>
                                 <OptionInput
                                     min="1"
                                     value={scale}
@@ -172,20 +213,14 @@ export default class ConvertOptions extends React.Component<
                                     onUpdate={this.updateOption}
                                 />
                             </div>
-                            <div>
+                            <button>
                                 <svg
-                                    xmlns="http://www.w3.org/2000/svg"
                                     width="30"
                                     height="30"
                                     viewBox="0 0 256 256"
                                     className="option__convert"
                                     onClick={this.convert}
                                 >
-                                    <rect
-                                        width="256"
-                                        height="256"
-                                        fill="none"
-                                    />
                                     <circle
                                         cx="128"
                                         cy="128"
@@ -216,7 +251,7 @@ export default class ConvertOptions extends React.Component<
                                         strokeWidth="24"
                                     />
                                 </svg>
-                            </div>
+                            </button>
                         </>
                     )}
                 </div>
