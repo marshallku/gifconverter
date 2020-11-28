@@ -20,6 +20,6 @@ It will convert to MP4 video automatically.
 
 #### MP4 to GIF
 
-![MP4 to GIF](https://blog.kakaocdn.net/dn/rlSEa/btqOnzmKSTB/Lnajta91JvEeZuaqkTAdK1/img.png)
+![MP4 to GIF](https://blog.kakaocdn.net/dn/IScDW/btqOtguRDKS/Gh6hJqF3CY4HrQ2YLldJBk/img.png)
 
 If you choose a mp4 file, you can see the options above. Change the options if needed, press the circled right arrow button. It will convert a mp4 file to a gif image.
