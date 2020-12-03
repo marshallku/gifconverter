@@ -8,8 +8,6 @@ declare global {
     }
 }
 
-interface DisplayProgressProps {}
-
 export default class DisplayProgress extends React.Component<
     DisplayProgressProps,
     { ratio: number }

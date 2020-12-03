@@ -9,18 +9,6 @@ import ConvertOptions from "./ConvertOptions";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import "./App.css";
 
-export interface Output {
-    blob: Blob;
-    url: string;
-}
-
-export interface GifOption {
-    startTime: string;
-    endTime: string;
-    scale: string;
-    fps: string;
-}
-
 const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
 
 function progressRatio(status: { ratio: number }) {

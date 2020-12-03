@@ -1,15 +1,7 @@
 import React from "react";
 import "./DownloadButton.css";
 
-interface DownloadButtonProps {
-    fileName: string;
-    fileExtension: string;
-    outputUrl: string;
-}
-
-export default class DownloadButton extends React.Component<
-    DownloadButtonProps
-> {
+export default class DownloadButton extends React.Component<DownloadButtonProps> {
     formatFileName = () => {
         let { fileName } = this.props;
         const outputExtension =

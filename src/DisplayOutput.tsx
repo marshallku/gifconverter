@@ -1,10 +1,5 @@
 import React from "react";
-import type { Output } from "./App";
 import "./DisplayOutput.css";
-
-interface DisplayOutputProps {
-    output: Output;
-}
 
 export default class DisplayOutput extends React.Component<DisplayOutputProps> {
     constructor(props: DisplayOutputProps) {

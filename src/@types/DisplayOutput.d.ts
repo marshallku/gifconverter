@@ -1,0 +1,3 @@
+interface DisplayOutputProps {
+    output: Output;
+}

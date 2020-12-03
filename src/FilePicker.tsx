@@ -1,10 +1,6 @@
 import React from "react";
 import "./FilePicker.css";
 
-interface FilePickerProps {
-    updateFile: (file: File, type: string) => void;
-}
-
 export default class FilePicker extends React.Component<
     FilePickerProps,
     { displayInvalid: boolean }
