@@ -15,7 +15,7 @@ function progressRatio(status) {
   });
 }
 function App2() {
-  const loadable = !!window.SharedArrayBuffer;
+  const [loadable, setLoadable] = useState(!!window.SharedArrayBuffer);
   const [ready, setReady] = useState(false);
   const [input, setInput] = useState();
   const [output, setOutput] = useState();
@@ -28,8 +28,13 @@ function App2() {
   });
   const load = async () => {
     if (loadable) {
-      await ffmpeg2.load();
-      setReady(true);
+      try {
+        await ffmpeg2.load();
+        setReady(true);
+      } catch (error) {
+        console.error(error);
+        setLoadable(false);
+      }
     }
   };
   const updateFile = (file, type) => {
@@ -84,7 +89,7 @@ function App2() {
       convertFile();
     }
   }, [input]);
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, ready ? /* @__PURE__ */ React.createElement(React.Fragment, null, input ? output ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(DisplayOutput2, {
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, loadable ? ready ? /* @__PURE__ */ React.createElement(React.Fragment, null, input ? output ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(DisplayOutput2, {
     output
   }), /* @__PURE__ */ React.createElement("div", {
     className: "output__control"
@@ -102,7 +107,7 @@ function App2() {
     setGifOption
   }) : /* @__PURE__ */ React.createElement(DisplayProgress2, null) : /* @__PURE__ */ React.createElement(FilePicker2, {
     updateFile
-  })) : loadable ? /* @__PURE__ */ React.createElement(Loader2, null) : /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h2", {
+  })) : /* @__PURE__ */ React.createElement(Loader2, null) : /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h2", {
     style: {fontSize: "3rem"}
   }, "Browser not supported \u{1F625}")));
 }
