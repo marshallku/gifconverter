@@ -15,7 +15,7 @@ html::before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+    background-image: linear-gradient(to top, #ffc7ee 0%, #abc5f1 100%);
     z-index: -1;
 }
 

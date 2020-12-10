@@ -18,7 +18,9 @@ function progressRatio(status: { ratio: number }) {
 }
 
 function App() {
-    const loadable = !!window.SharedArrayBuffer;
+    const [loadable, setLoadable] = useState<boolean>(
+        !!window.SharedArrayBuffer
+    );
     const [ready, setReady] = useState<boolean>(false);
     const [input, setInput] = useState<{
         file: File;
@@ -35,8 +37,13 @@ function App() {
 
     const load = async () => {
         if (loadable) {
-            await ffmpeg.load();
-            setReady(true);
+            try {
+                await ffmpeg.load();
+                setReady(true);
+            } catch (error) {
+                console.error(error);
+                setLoadable(false);
+            }
         }
     };
 
@@ -135,42 +142,44 @@ function App() {
 
     return (
         <>
-            {ready ? (
-                <>
-                    {input ? (
-                        output ? (
-                            <>
-                                <DisplayOutput output={output} />
-                                <div className="output__control">
-                                    <DownloadButton
-                                        fileName={input.file.name}
-                                        fileExtension={input.file.type}
-                                        outputUrl={output.url}
+            {loadable ? (
+                ready ? (
+                    <>
+                        {input ? (
+                            output ? (
+                                <>
+                                    <DisplayOutput output={output} />
+                                    <div className="output__control">
+                                        <DownloadButton
+                                            fileName={input.file.name}
+                                            fileExtension={input.file.type}
+                                            outputUrl={output.url}
+                                        />
+                                        <ResetButton reset={reset} />
+                                    </div>
+                                </>
+                            ) : input.type === "video/mp4" ? (
+                                converting ? (
+                                    <DisplayProgress />
+                                ) : (
+                                    <ConvertOptions
+                                        input={input.file}
+                                        preConvert={setConverting}
+                                        convert={convertFile}
+                                        gifOption={gifOption}
+                                        setGifOption={setGifOption}
                                     />
-                                    <ResetButton reset={reset} />
-                                </div>
-                            </>
-                        ) : input.type === "video/mp4" ? (
-                            converting ? (
-                                <DisplayProgress />
+                                )
                             ) : (
-                                <ConvertOptions
-                                    input={input.file}
-                                    preConvert={setConverting}
-                                    convert={convertFile}
-                                    gifOption={gifOption}
-                                    setGifOption={setGifOption}
-                                />
+                                <DisplayProgress />
                             )
                         ) : (
-                            <DisplayProgress />
-                        )
-                    ) : (
-                        <FilePicker updateFile={updateFile} />
-                    )}
-                </>
-            ) : loadable ? (
-                <Loader />
+                            <FilePicker updateFile={updateFile} />
+                        )}
+                    </>
+                ) : (
+                    <Loader />
+                )
             ) : (
                 <div>
                     <h2 style={{ fontSize: "3rem" }}>
