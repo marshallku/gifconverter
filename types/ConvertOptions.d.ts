@@ -16,3 +16,7 @@ interface OptionInputProps {
     max?: string;
     video?: HTMLVideoElement;
 }
+
+interface OptionResizeProps {
+    video?: HTMLVideoElement;
+}

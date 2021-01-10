@@ -2,12 +2,6 @@ import React from "react";
 import Loader from "./Loader";
 import "./DisplayProgress.css";
 
-declare global {
-    interface Window {
-        displayProgress: React.Component;
-    }
-}
-
 export default class DisplayProgress extends React.Component<
     DisplayProgressProps,
     { ratio: number }

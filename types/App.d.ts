@@ -8,4 +8,5 @@ interface GifOption {
     endTime: string;
     scale: string;
     fps: string;
+    crop?: string;
 }

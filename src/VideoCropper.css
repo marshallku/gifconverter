@@ -1,0 +1,70 @@
+.option__resize {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 3px solid;
+}
+
+.optin__resize__point {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    box-sizing: border-box;
+    transform: scale(0.5);
+    transition: transform 0.25s ease-in-out;
+}
+
+.optin__resize__point:hover {
+    transform: scale(1);
+}
+
+.option__resize__point--top--left {
+    top: -11.5px;
+    left: -11.5px;
+    cursor: nwse-resize;
+}
+.option__resize__point--top--center {
+    top: -11.5px;
+    left: calc(50% - 11.5px);
+    cursor: ns-resize;
+}
+
+.option__resize__point--top--right {
+    top: -11.5px;
+    right: -11.5px;
+    cursor: nesw-resize;
+}
+
+.option__resize__point--center--left {
+    top: calc(50% - 11.5px);
+    left: -11.5px;
+    cursor: ew-resize;
+}
+
+.option__resize__point--center--right {
+    top: calc(50% - 11.5px);
+    right: -11.5px;
+    cursor: ew-resize;
+}
+
+.option__resize__point--bottom--left {
+    bottom: -11.5px;
+    left: -11.5px;
+    cursor: nesw-resize;
+}
+
+.option__resize__point--bottom--center {
+    bottom: -11.5px;
+    left: calc(50% - 11.5px);
+    cursor: ns-resize;
+}
+
+.option__resize__point--bottom--right {
+    bottom: -11.5px;
+    right: -11.5px;
+    cursor: nwse-resize;
+}

@@ -11,6 +11,13 @@ import "./App.css";
 
 const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
 
+declare global {
+    interface Window {
+        displayProgress: React.Component;
+        videoResizer: React.Component<VideoResizerProps, VideoResizerStates>;
+    }
+}
+
 function progressRatio(status: { ratio: number }) {
     window.displayProgress.setState({
         ratio: status.ratio,
@@ -86,7 +93,7 @@ function App() {
             });
         } else {
             // convert mp4 to gif
-            const { startTime, endTime, scale, fps } = gifOption;
+            const { startTime, endTime, scale, fps, crop } = gifOption;
 
             ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
             await ffmpeg.run(
@@ -100,8 +107,14 @@ function App() {
                 `${endTime ? endTime : "10"}`,
                 "-loop",
                 "0",
+                // "-filter:v",
+                // `crop=${crop}`,
+                // "-c:a",
+                // "copy",
                 "-filter_complex",
-                `fps=${fps},scale=${scale}:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse`,
+                `fps=${fps}${
+                    crop ? `,crop=${crop}` : ""
+                },scale=${scale}:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse`,
                 "output.gif",
                 "-pix_fmt",
                 "rgb24"

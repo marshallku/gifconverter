@@ -40,7 +40,7 @@
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "@types/snowpack-env": "^2.3.2",
-    "@web/test-runner": "^0.9.13",
+    "@web/test-runner": "^0.10.2",
     "chai": "^4.2.0",
     "gh-pages": "^3.1.0",
     "prettier": "^2.2.1",
