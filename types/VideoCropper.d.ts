@@ -16,4 +16,8 @@ interface VideoResizerStates extends size {
         y: number;
         orig: size;
     };
+    video: {
+        width: number;
+        height: number;
+    };
 }
