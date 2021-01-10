@@ -65,11 +65,20 @@ export default class ConvertOptions extends React.Component {
       if (this.state.video)
         return;
       const video = event.target;
-      this.options.endTime = `${video.duration}`;
-      this.options.scale = `${video.offsetWidth}`;
-      this.setState({
-        video
-      });
+      const checkReadyState = () => {
+        if (video.readyState === 4) {
+          this.options.endTime = `${video.duration}`;
+          this.options.scale = `${video.offsetWidth}`;
+          this.setState({
+            video
+          });
+        } else {
+          setTimeout(() => {
+            checkReadyState();
+          });
+        }
+      };
+      checkReadyState();
     };
     this.updateOption = (option, value) => {
       this.options[option] = value;
