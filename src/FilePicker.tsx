@@ -3,7 +3,7 @@ import "./FilePicker.css";
 
 export default class FilePicker extends React.Component<
     FilePickerProps,
-    { displayInvalid: boolean }
+    FilePickerStates
 > {
     constructor(props: FilePickerProps) {
         super(props);

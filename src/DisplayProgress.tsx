@@ -4,7 +4,7 @@ import "./DisplayProgress.css";
 
 export default class DisplayProgress extends React.Component<
     DisplayProgressProps,
-    { ratio: number }
+    DisplayProgressStates
 > {
     constructor(props: DisplayProgressProps) {
         super(props);

@@ -2,7 +2,7 @@ import React from "react";
 import VideoCroper from "./VideoCropper";
 import "./ConvertOptions.css";
 
-class OptionInput extends React.Component<OptionInputProps, { value: string }> {
+class OptionInput extends React.Component<OptionInputProps, OptionInputStates> {
     constructor(props: OptionInputProps) {
         super(props);
         this.state = {
@@ -75,7 +75,7 @@ class OptionInput extends React.Component<OptionInputProps, { value: string }> {
 
 export default class ConvertOptions extends React.Component<
     ConvertOptionsProps,
-    { video: HTMLVideoElement | null; size?: size }
+    ConvertOptionsStates
 > {
     options: GifOption;
     size: size;

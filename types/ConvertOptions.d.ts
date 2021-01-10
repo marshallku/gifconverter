@@ -8,6 +8,11 @@ interface ConvertOptionsProps {
     preConvert: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface ConvertOptionsStates {
+    video: HTMLVideoElement | null;
+    size?: size;
+}
+
 interface OptionInputProps {
     value: string;
     option: optionNames;
@@ -17,6 +22,6 @@ interface OptionInputProps {
     video?: HTMLVideoElement;
 }
 
-interface OptionResizeProps {
-    video?: HTMLVideoElement;
+interface OptionInputStates {
+    value: string;
 }
