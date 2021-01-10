@@ -1,6 +1,6 @@
 import React from "../web_modules/react.js";
 import "./DownloadButton.css.proxy.js";
-export default class DownloadButton2 extends React.Component {
+export default class DownloadButton extends React.Component {
   constructor() {
     super(...arguments);
     this.formatFileName = () => {

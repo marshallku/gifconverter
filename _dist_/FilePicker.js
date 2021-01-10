@@ -1,6 +1,6 @@
 import React from "../web_modules/react.js";
 import "./FilePicker.css.proxy.js";
-export default class FilePicker2 extends React.Component {
+export default class FilePicker extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = (event) => {

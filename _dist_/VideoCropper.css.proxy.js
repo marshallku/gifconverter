@@ -1,0 +1,10 @@
+// [snowpack] add styles to the page (skip if no document exists)
+if (typeof document !== 'undefined') {
+  const code = ".option__resize {\r\n    position: absolute;\r\n    top: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    left: 0;\r\n    border: 3px solid;\r\n}\r\n\r\n.optin__resize__point {\r\n    position: absolute;\r\n    width: 20px;\r\n    height: 20px;\r\n    background: rgba(0, 0, 0, 0.5);\r\n    border-radius: 50%;\r\n    box-sizing: border-box;\r\n    transform: scale(0.5);\r\n    transition: transform 0.25s ease-in-out;\r\n}\r\n\r\n.optin__resize__point:hover {\r\n    transform: scale(1);\r\n}\r\n\r\n.option__resize__point--top--left {\r\n    top: -11.5px;\r\n    left: -11.5px;\r\n    cursor: nwse-resize;\r\n}\r\n.option__resize__point--top--center {\r\n    top: -11.5px;\r\n    left: calc(50% - 11.5px);\r\n    cursor: ns-resize;\r\n}\r\n\r\n.option__resize__point--top--right {\r\n    top: -11.5px;\r\n    right: -11.5px;\r\n    cursor: nesw-resize;\r\n}\r\n\r\n.option__resize__point--center--left {\r\n    top: calc(50% - 11.5px);\r\n    left: -11.5px;\r\n    cursor: ew-resize;\r\n}\r\n\r\n.option__resize__point--center--right {\r\n    top: calc(50% - 11.5px);\r\n    right: -11.5px;\r\n    cursor: ew-resize;\r\n}\r\n\r\n.option__resize__point--bottom--left {\r\n    bottom: -11.5px;\r\n    left: -11.5px;\r\n    cursor: nesw-resize;\r\n}\r\n\r\n.option__resize__point--bottom--center {\r\n    bottom: -11.5px;\r\n    left: calc(50% - 11.5px);\r\n    cursor: ns-resize;\r\n}\r\n\r\n.option__resize__point--bottom--right {\r\n    bottom: -11.5px;\r\n    right: -11.5px;\r\n    cursor: nwse-resize;\r\n}\r\n";
+
+  const styleEl = document.createElement("style");
+  const codeEl = document.createTextNode(code);
+  styleEl.type = 'text/css';
+  styleEl.appendChild(codeEl);
+  document.head.appendChild(styleEl);
+}

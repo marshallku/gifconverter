@@ -1,5 +1,5 @@
 import React from "../web_modules/react.js";
-import Loader2 from "./Loader.js";
+import VideoCroper from "./VideoCropper.js";
 import "./ConvertOptions.css.proxy.js";
 class OptionInput extends React.Component {
   constructor(props) {
@@ -58,7 +58,7 @@ class OptionInput extends React.Component {
     }))));
   }
 }
-export default class ConvertOptions2 extends React.Component {
+export default class ConvertOptions extends React.Component {
   constructor(props) {
     super(props);
     this.handleVideoLoad = (event) => {
@@ -74,20 +74,30 @@ export default class ConvertOptions2 extends React.Component {
     this.updateOption = (option, value) => {
       this.options[option] = value;
     };
+    this.setSize = (size) => {
+      this.size = size;
+    };
     this.convert = () => {
-      const {startTime, endTime, scale, fps} = this.options;
+      const {startTime, endTime} = this.options;
       if (startTime >= endTime || endTime === "0")
         return;
-      this.props.setGifOption({
-        startTime,
-        endTime,
-        fps,
-        scale
-      });
-      setTimeout(() => {
-        this.props.preConvert(true);
-        this.props.convert();
-      }, 0);
+      const {video} = this.state;
+      if (video) {
+        const {top, right, bottom, left} = this.size;
+        if (top + right + bottom + left) {
+          const videoScale = video.videoWidth / video.offsetWidth;
+          this.size.top = top * videoScale;
+          this.size.right = right * videoScale;
+          this.size.bottom = bottom * videoScale;
+          this.size.left = left * videoScale;
+          this.options.crop = `${video.videoWidth - this.size.left - this.size.right}:${video.videoHeight - this.size.top - this.size.bottom}:${this.size.left}:${this.size.top}`;
+        }
+        this.props.setGifOption(this.options);
+        setTimeout(() => {
+          this.props.preConvert(true);
+          this.props.convert();
+        }, 0);
+      }
     };
     const {gifOption} = this.props;
     this.options = {
@@ -96,6 +106,12 @@ export default class ConvertOptions2 extends React.Component {
       fps: gifOption.fps,
       scale: gifOption.scale
     };
+    this.size = {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+    };
     this.state = {
       video: null
     };
@@ -103,8 +119,8 @@ export default class ConvertOptions2 extends React.Component {
   render() {
     const {startTime, endTime, fps, scale} = this.options;
     const {video} = this.state;
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, !!this.state.video || /* @__PURE__ */ React.createElement(Loader2, null), /* @__PURE__ */ React.createElement("div", {
-      className: `${this.state.video ? "loaded " : ""}option`
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", {
+      className: `${video ? "loaded " : ""}option`
     }, /* @__PURE__ */ React.createElement("div", {
       className: "option__preview"
     }, /* @__PURE__ */ React.createElement("video", {
@@ -114,7 +130,11 @@ export default class ConvertOptions2 extends React.Component {
       playsInline: true,
       muted: true,
       loop: true,
-      controls: true
+      controls: true,
+      draggable: "false"
+    }), !!video && /* @__PURE__ */ React.createElement(VideoCroper, {
+      video,
+      setSize: this.setSize
     })), !!video && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", {
       className: "option__input"
     }, /* @__PURE__ */ React.createElement("div", {

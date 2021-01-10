@@ -1,7 +1,7 @@
 import React from "../web_modules/react.js";
-import Loader2 from "./Loader.js";
+import Loader from "./Loader.js";
 import "./DisplayProgress.css.proxy.js";
-export default class DisplayProgress2 extends React.Component {
+export default class DisplayProgress extends React.Component {
   constructor(props) {
     super(props);
     window.displayProgress = this;
@@ -13,6 +13,6 @@ export default class DisplayProgress2 extends React.Component {
     const {ratio} = this.state;
     return /* @__PURE__ */ React.createElement("div", {
       className: "progress"
-    }, /* @__PURE__ */ React.createElement(Loader2, null), /* @__PURE__ */ React.createElement("div", null, Math.round(ratio * 100), " %"));
+    }, /* @__PURE__ */ React.createElement(Loader, null), /* @__PURE__ */ React.createElement("div", null, Math.round(ratio * 100), " %"));
   }
 }

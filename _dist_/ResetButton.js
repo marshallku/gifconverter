@@ -1,6 +1,6 @@
 import React from "../web_modules/react.js";
 import "./ResetButton.css.proxy.js";
-export default class ResetButton2 extends React.Component {
+export default class ResetButton extends React.Component {
   constructor(props) {
     super(props);
   }

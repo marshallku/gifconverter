@@ -1,20 +1,20 @@
 import React, {useState, useEffect} from "../web_modules/react.js";
-import FilePicker2 from "./FilePicker.js";
-import DisplayProgress2 from "./DisplayProgress.js";
-import DisplayOutput2 from "./DisplayOutput.js";
-import ResetButton2 from "./ResetButton.js";
-import Loader2 from "./Loader.js";
-import DownloadButton2 from "./DownloadButton.js";
-import ConvertOptions2 from "./ConvertOptions.js";
+import FilePicker from "./FilePicker.js";
+import DisplayProgress from "./DisplayProgress.js";
+import DisplayOutput from "./DisplayOutput.js";
+import ResetButton from "./ResetButton.js";
+import Loader from "./Loader.js";
+import DownloadButton from "./DownloadButton.js";
+import ConvertOptions from "./ConvertOptions.js";
 import {createFFmpeg, fetchFile} from "../web_modules/@ffmpeg/ffmpeg.js";
 import "./App.css.proxy.js";
-const ffmpeg2 = createFFmpeg({progress: progressRatio});
+const ffmpeg = createFFmpeg({progress: progressRatio});
 function progressRatio(status) {
   window.displayProgress.setState({
     ratio: status.ratio
   });
 }
-function App2() {
+function App() {
   const [loadable, setLoadable] = useState(!!window.SharedArrayBuffer);
   const [ready, setReady] = useState(false);
   const [input, setInput] = useState();
@@ -29,7 +29,7 @@ function App2() {
   const load = async () => {
     if (loadable) {
       try {
-        await ffmpeg2.load();
+        await ffmpeg.load();
         setReady(true);
       } catch (error) {
         console.error(error);
@@ -48,9 +48,9 @@ function App2() {
       return;
     const {file, type} = input;
     if (type === "image/gif") {
-      ffmpeg2.FS("writeFile", "input.gif", await fetchFile(file));
-      await ffmpeg2.run("-f", "gif", "-i", "input.gif", "-movflags", "+faststart", "-pix_fmt", "yuv420p", "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2", "output.mp4");
-      const data = ffmpeg2.FS("readFile", "output.mp4");
+      ffmpeg.FS("writeFile", "input.gif", await fetchFile(file));
+      await ffmpeg.run("-f", "gif", "-i", "input.gif", "-movflags", "+faststart", "-pix_fmt", "yuv420p", "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2", "output.mp4");
+      const data = ffmpeg.FS("readFile", "output.mp4");
       const blob = new Blob([data.buffer], {type: "video/mp4"});
       const url = URL.createObjectURL(blob);
       setOutput({
@@ -58,10 +58,10 @@ function App2() {
         url
       });
     } else {
-      const {startTime, endTime, scale, fps} = gifOption;
-      ffmpeg2.FS("writeFile", "input.mp4", await fetchFile(file));
-      await ffmpeg2.run("-f", "mp4", "-i", "input.mp4", `${startTime ? "-ss" : ""}`, `${startTime ? startTime : ""}`, "-t", `${endTime ? endTime : "10"}`, "-loop", "0", "-filter_complex", `fps=${fps},scale=${scale}:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse`, "output.gif", "-pix_fmt", "rgb24");
-      const data = ffmpeg2.FS("readFile", "output.gif");
+      const {startTime, endTime, scale, fps, crop} = gifOption;
+      ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
+      await ffmpeg.run("-f", "mp4", "-i", "input.mp4", `${startTime ? "-ss" : ""}`, `${startTime ? startTime : ""}`, "-t", `${endTime ? endTime : "10"}`, "-loop", "0", "-filter_complex", `fps=${fps}${crop ? `,crop=${crop}` : ""},scale=${scale}:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse`, "output.gif", "-pix_fmt", "rgb24");
+      const data = ffmpeg.FS("readFile", "output.gif");
       const blob = new Blob([data.buffer], {type: "image/gif"});
       const url = URL.createObjectURL(blob);
       setOutput({
@@ -89,26 +89,26 @@ function App2() {
       convertFile();
     }
   }, [input]);
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, loadable ? ready ? /* @__PURE__ */ React.createElement(React.Fragment, null, input ? output ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(DisplayOutput2, {
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, loadable ? ready ? /* @__PURE__ */ React.createElement(React.Fragment, null, input ? output ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(DisplayOutput, {
     output
   }), /* @__PURE__ */ React.createElement("div", {
     className: "output__control"
-  }, /* @__PURE__ */ React.createElement(DownloadButton2, {
+  }, /* @__PURE__ */ React.createElement(DownloadButton, {
     fileName: input.file.name,
     fileExtension: input.file.type,
     outputUrl: output.url
-  }), /* @__PURE__ */ React.createElement(ResetButton2, {
+  }), /* @__PURE__ */ React.createElement(ResetButton, {
     reset
-  }))) : input.type === "video/mp4" ? converting ? /* @__PURE__ */ React.createElement(DisplayProgress2, null) : /* @__PURE__ */ React.createElement(ConvertOptions2, {
+  }))) : input.type === "video/mp4" ? converting ? /* @__PURE__ */ React.createElement(DisplayProgress, null) : /* @__PURE__ */ React.createElement(ConvertOptions, {
     input: input.file,
     preConvert: setConverting,
     convert: convertFile,
     gifOption,
     setGifOption
-  }) : /* @__PURE__ */ React.createElement(DisplayProgress2, null) : /* @__PURE__ */ React.createElement(FilePicker2, {
+  }) : /* @__PURE__ */ React.createElement(DisplayProgress, null) : /* @__PURE__ */ React.createElement(FilePicker, {
     updateFile
-  })) : /* @__PURE__ */ React.createElement(Loader2, null) : /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h2", {
+  })) : /* @__PURE__ */ React.createElement(Loader, null) : /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h2", {
     style: {fontSize: "3rem"}
   }, "Browser not supported \u{1F625}")));
 }
-export default App2;
+export default App;
