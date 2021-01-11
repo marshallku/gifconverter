@@ -347,6 +347,83 @@ export default class VideoCroper extends React.Component<
         }
     }
 
+    moveBox = (event: any) => {
+        const clientX = event.touches
+            ? event.touches[0].clientX
+            : event.clientX;
+        const clientY = event.touches
+            ? event.touches[0].clientY
+            : event.clientY;
+        const { startPosition } = this;
+
+        const xDiff = startPosition.x - clientX;
+        const yDiff = startPosition.y - clientY;
+        const xMax = startPosition.orig.right + startPosition.orig.left;
+        const yMax = startPosition.orig.top + startPosition.orig.bottom;
+
+        this.setState({
+            top: Math.min(yMax, Math.max(startPosition.orig.top - yDiff, 0)),
+            left: Math.min(xMax, Math.max(startPosition.orig.left - xDiff, 0)),
+            bottom: Math.min(
+                yMax,
+                Math.max(startPosition.orig.bottom + yDiff, 0)
+            ),
+            right: Math.min(
+                xMax,
+                Math.max(startPosition.orig.right + xDiff, 0)
+            ),
+        });
+    };
+
+    handleMove = (event: any) => {
+        const { top, right, bottom, left } = this.state;
+        const clientX = event.touches
+            ? event.touches[0].clientX
+            : event.clientX;
+        const clientY = event.touches
+            ? event.touches[0].clientY
+            : event.clientY;
+        const startPosition = {
+            x: clientX,
+            y: clientY,
+            orig: {
+                top,
+                right,
+                bottom,
+                left,
+            },
+        };
+        this.startPosition = startPosition;
+
+        if (event.nativeEvent instanceof TouchEvent) {
+            document.addEventListener("touchmove", this.moveBox, {
+                passive: true,
+            });
+
+            document.addEventListener(
+                "touchend",
+                () => {
+                    document.removeEventListener("touchmove", this.moveBox);
+                    this.updateOption();
+                },
+                { once: true }
+            );
+        } else if (event.nativeEvent instanceof MouseEvent) {
+            document.addEventListener("mousemove", this.moveBox, {
+                passive: true,
+            });
+
+            document.addEventListener(
+                "mouseup",
+                () => {
+                    document.removeEventListener("mousemove", this.moveBox);
+                    this.updateOption();
+                },
+                { once: true }
+            );
+        }
+    };
+
     updateOption() {
         const { top, right, bottom, left } = this.state;
 
@@ -366,6 +443,11 @@ export default class VideoCroper extends React.Component<
                     left: `${left}px`,
                 }}
             >
+                <div
+                    className="option__resize__move"
+                    onMouseDown={this.handleMove}
+                    onTouchStart={this.handleMove}
+                ></div>
                 <div
                     className="optin__resize__point option__resize__point--top--left"
                     onMouseDown={(event) => {
