@@ -11,11 +11,6 @@ interface size {
 }
 
 interface VideoResizerStates extends size {
-    startPosition: {
-        x: number;
-        y: number;
-        orig: size;
-    };
     video: {
         width: number;
         height: number;

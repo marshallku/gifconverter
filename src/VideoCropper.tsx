@@ -5,6 +5,11 @@ export default class VideoCroper extends React.Component<
     VideoResizerProps,
     VideoResizerStates
 > {
+    startPosition: {
+        x: number;
+        y: number;
+        orig: size;
+    };
     constructor(props: VideoResizerProps) {
         super(props);
 
@@ -13,19 +18,20 @@ export default class VideoCroper extends React.Component<
             right: 0,
             bottom: 0,
             left: 0,
-            startPosition: {
-                x: 0,
-                y: 0,
-                orig: {
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                },
-            },
             video: {
                 width: this.props.video.offsetWidth,
                 height: this.props.video.offsetHeight,
+            },
+        };
+
+        this.startPosition = {
+            x: 0,
+            y: 0,
+            orig: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
             },
         };
 
@@ -61,10 +67,8 @@ export default class VideoCroper extends React.Component<
                 left,
             },
         };
-        this.setState({
-            startPosition,
-        });
 
+        this.startPosition = startPosition;
         this.setResizingMode("mouse", positionX, positiony);
     }
 
@@ -84,15 +88,14 @@ export default class VideoCroper extends React.Component<
                 left,
             },
         };
-        this.setState({
-            startPosition,
-        });
 
+        this.startPosition = startPosition;
         this.setResizingMode("touch", positionX, positionY);
     }
 
-    moveTop = (event: any) => {
-        const { startPosition, video } = this.state;
+    resizeTop = (event: any) => {
+        const { startPosition } = this;
+        const { video } = this.state;
         const clientY = event.touches
             ? event.touches[0].clientY
             : event.clientY;
@@ -105,8 +108,9 @@ export default class VideoCroper extends React.Component<
         });
     };
 
-    moveRight = (event: any) => {
-        const { startPosition, video } = this.state;
+    resizeRight = (event: any) => {
+        const { startPosition } = this;
+        const { video } = this.state;
         const clientX = event.touches
             ? event.touches[0].clientX
             : event.clientX;
@@ -119,8 +123,9 @@ export default class VideoCroper extends React.Component<
         });
     };
 
-    moveBottom = (event: any) => {
-        const { startPosition, video } = this.state;
+    resizeBottom = (event: any) => {
+        const { startPosition } = this;
+        const { video } = this.state;
         const clientY = event.touches
             ? event.touches[0].clientY
             : event.clientY;
@@ -133,8 +138,9 @@ export default class VideoCroper extends React.Component<
         });
     };
 
-    moveLeft = (event: any) => {
-        const { startPosition, video } = this.state;
+    resizeLeft = (event: any) => {
+        const { startPosition } = this;
+        const { video } = this.state;
         const clientX = event.touches
             ? event.touches[0].clientX
             : event.clientX;
@@ -147,8 +153,9 @@ export default class VideoCroper extends React.Component<
         });
     };
 
-    moveTopLeft = (event: any) => {
-        const { startPosition, video } = this.state;
+    resizeTopLeft = (event: any) => {
+        const { startPosition } = this;
+        const { video } = this.state;
         const clientX = event.touches
             ? event.touches[0].clientX
             : event.clientX;
@@ -168,8 +175,9 @@ export default class VideoCroper extends React.Component<
         });
     };
 
-    moveTopRight = (event: any) => {
-        const { startPosition, video } = this.state;
+    resizeTopRight = (event: any) => {
+        const { startPosition } = this;
+        const { video } = this.state;
         const clientX = event.touches
             ? event.touches[0].clientX
             : event.clientX;
@@ -192,8 +200,9 @@ export default class VideoCroper extends React.Component<
         });
     };
 
-    moveBottomLeft = (event: any) => {
-        const { startPosition, video } = this.state;
+    resizeBottomLeft = (event: any) => {
+        const { startPosition } = this;
+        const { video } = this.state;
         const clientX = event.touches
             ? event.touches[0].clientX
             : event.clientX;
@@ -216,8 +225,9 @@ export default class VideoCroper extends React.Component<
         });
     };
 
-    moveBottomRight = (event: any) => {
-        const { startPosition, video } = this.state;
+    resizeBottomRight = (event: any) => {
+        const { startPosition } = this;
+        const { video } = this.state;
         const clientX = event.touches
             ? event.touches[0].clientX
             : event.clientX;
@@ -242,12 +252,6 @@ export default class VideoCroper extends React.Component<
             ),
         });
     };
-
-    updateOption() {
-        const { top, right, bottom, left } = this.state;
-
-        this.props.setSize({ top, right, bottom, left });
-    }
 
     setResizingMode(
         type: "touch" | "mouse",
@@ -258,11 +262,11 @@ export default class VideoCroper extends React.Component<
             const resizeFunction =
                 positionY === "c"
                     ? positionX === "l"
-                        ? this.moveLeft
-                        : this.moveRight
+                        ? this.resizeLeft
+                        : this.resizeRight
                     : positionY === "t"
-                    ? this.moveTop
-                    : this.moveBottom;
+                    ? this.resizeTop
+                    : this.resizeBottom;
 
             if (type === "touch") {
                 document.addEventListener("touchmove", resizeFunction, {
@@ -301,11 +305,11 @@ export default class VideoCroper extends React.Component<
             const resizeFunction =
                 positionY === "t"
                     ? positionX === "l"
-                        ? this.moveTopLeft
-                        : this.moveTopRight
+                        ? this.resizeTopLeft
+                        : this.resizeTopRight
                     : positionX === "l"
-                    ? this.moveBottomLeft
-                    : this.moveBottomRight;
+                    ? this.resizeBottomLeft
+                    : this.resizeBottomRight;
 
             if (type === "touch") {
                 document.addEventListener("touchmove", resizeFunction, {
@@ -341,6 +345,12 @@ export default class VideoCroper extends React.Component<
                 );
             }
         }
+    }
+
+    updateOption() {
+        const { top, right, bottom, left } = this.state;
+
+        this.props.setSize({ top, right, bottom, left });
     }
 
     render() {
