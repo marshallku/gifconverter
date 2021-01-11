@@ -3,8 +3,9 @@ import "./VideoCropper.css.proxy.js";
 export default class VideoCroper extends React.Component {
   constructor(props) {
     super(props);
-    this.moveTop = (event) => {
-      const {startPosition, video} = this.state;
+    this.resizeTop = (event) => {
+      const {startPosition} = this;
+      const {video} = this.state;
       const clientY = event.touches ? event.touches[0].clientY : event.clientY;
       const newTop = startPosition.orig.top + clientY - startPosition.y;
       if (video.height - startPosition.orig.bottom - 10 <= newTop)
@@ -13,8 +14,9 @@ export default class VideoCroper extends React.Component {
         top: Math.max(newTop, 0)
       });
     };
-    this.moveRight = (event) => {
-      const {startPosition, video} = this.state;
+    this.resizeRight = (event) => {
+      const {startPosition} = this;
+      const {video} = this.state;
       const clientX = event.touches ? event.touches[0].clientX : event.clientX;
       const newRight = startPosition.orig.right - clientX + startPosition.x;
       if (video.width - startPosition.orig.left - 10 <= newRight)
@@ -23,8 +25,9 @@ export default class VideoCroper extends React.Component {
         right: Math.max(newRight, 0)
       });
     };
-    this.moveBottom = (event) => {
-      const {startPosition, video} = this.state;
+    this.resizeBottom = (event) => {
+      const {startPosition} = this;
+      const {video} = this.state;
       const clientY = event.touches ? event.touches[0].clientY : event.clientY;
       const newBottom = startPosition.orig.bottom - clientY + startPosition.y;
       if (video.height - startPosition.orig.top - 10 <= newBottom)
@@ -33,8 +36,9 @@ export default class VideoCroper extends React.Component {
         bottom: Math.max(newBottom, 0)
       });
     };
-    this.moveLeft = (event) => {
-      const {startPosition, video} = this.state;
+    this.resizeLeft = (event) => {
+      const {startPosition} = this;
+      const {video} = this.state;
       const clientX = event.touches ? event.touches[0].clientX : event.clientX;
       const newLeft = startPosition.orig.left + clientX - startPosition.x;
       if (video.width - startPosition.orig.right - 10 <= newLeft)
@@ -43,8 +47,9 @@ export default class VideoCroper extends React.Component {
         left: Math.max(newLeft, 0)
       });
     };
-    this.moveTopLeft = (event) => {
-      const {startPosition, video} = this.state;
+    this.resizeTopLeft = (event) => {
+      const {startPosition} = this;
+      const {video} = this.state;
       const clientX = event.touches ? event.touches[0].clientX : event.clientX;
       const clientY = event.touches ? event.touches[0].clientY : event.clientY;
       this.setState({
@@ -52,8 +57,9 @@ export default class VideoCroper extends React.Component {
         left: Math.min(video.width - startPosition.orig.right - 10, Math.max(startPosition.orig.left + clientX - startPosition.x, 0))
       });
     };
-    this.moveTopRight = (event) => {
-      const {startPosition, video} = this.state;
+    this.resizeTopRight = (event) => {
+      const {startPosition} = this;
+      const {video} = this.state;
       const clientX = event.touches ? event.touches[0].clientX : event.clientX;
       const clientY = event.touches ? event.touches[0].clientY : event.clientY;
       this.setState({
@@ -61,8 +67,9 @@ export default class VideoCroper extends React.Component {
         right: Math.min(video.width - startPosition.orig.left - 10, Math.max(startPosition.orig.right - clientX + startPosition.x, 0))
       });
     };
-    this.moveBottomLeft = (event) => {
-      const {startPosition, video} = this.state;
+    this.resizeBottomLeft = (event) => {
+      const {startPosition} = this;
+      const {video} = this.state;
       const clientX = event.touches ? event.touches[0].clientX : event.clientX;
       const clientY = event.touches ? event.touches[0].clientY : event.clientY;
       this.setState({
@@ -70,33 +77,82 @@ export default class VideoCroper extends React.Component {
         left: Math.min(video.width - startPosition.orig.right - 10, Math.max(startPosition.orig.left + clientX - startPosition.x, 0))
       });
     };
-    this.moveBottomRight = (event) => {
-      const {startPosition, video} = this.state;
+    this.resizeBottomRight = (event) => {
+      const {startPosition} = this;
+      const {video} = this.state;
       const clientX = event.touches ? event.touches[0].clientX : event.clientX;
       const clientY = event.touches ? event.touches[0].clientY : event.clientY;
       this.setState({
         bottom: Math.min(video.height - startPosition.orig.top - 10, Math.max(startPosition.orig.bottom - clientY + startPosition.y, 0)),
         right: Math.min(video.width - startPosition.orig.left - 10, Math.max(startPosition.orig.right - clientX + startPosition.x, 0))
       });
+    };
+    this.moveBox = (event) => {
+      const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+      const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+      const {startPosition} = this;
+      const xDiff = startPosition.x - clientX;
+      const yDiff = startPosition.y - clientY;
+      const xMax = startPosition.orig.right + startPosition.orig.left;
+      const yMax = startPosition.orig.top + startPosition.orig.bottom;
+      this.setState({
+        top: Math.min(yMax, Math.max(startPosition.orig.top - yDiff, 0)),
+        left: Math.min(xMax, Math.max(startPosition.orig.left - xDiff, 0)),
+        bottom: Math.min(yMax, Math.max(startPosition.orig.bottom + yDiff, 0)),
+        right: Math.min(xMax, Math.max(startPosition.orig.right + xDiff, 0))
+      });
+    };
+    this.handleMove = (event) => {
+      const {top, right, bottom, left} = this.state;
+      const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+      const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+      const startPosition = {
+        x: clientX,
+        y: clientY,
+        orig: {
+          top,
+          right,
+          bottom,
+          left
+        }
+      };
+      this.startPosition = startPosition;
+      if (event.nativeEvent instanceof TouchEvent) {
+        document.addEventListener("touchmove", this.moveBox, {
+          passive: true
+        });
+        document.addEventListener("touchend", () => {
+          document.removeEventListener("touchmove", this.moveBox);
+          this.updateOption();
+        }, {once: true});
+      } else if (event.nativeEvent instanceof MouseEvent) {
+        document.addEventListener("mousemove", this.moveBox, {
+          passive: true
+        });
+        document.addEventListener("mouseup", () => {
+          document.removeEventListener("mousemove", this.moveBox);
+          this.updateOption();
+        }, {once: true});
+      }
     };
     this.state = {
       top: 0,
       right: 0,
       bottom: 0,
       left: 0,
-      startPosition: {
-        x: 0,
-        y: 0,
-        orig: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        }
-      },
       video: {
         width: this.props.video.offsetWidth,
         height: this.props.video.offsetHeight
+      }
+    };
+    this.startPosition = {
+      x: 0,
+      y: 0,
+      orig: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
       }
     };
     this.updateVideoSize();
@@ -124,9 +180,7 @@ export default class VideoCroper extends React.Component {
         left
       }
     };
-    this.setState({
-      startPosition
-    });
+    this.startPosition = startPosition;
     this.setResizingMode("mouse", positionX, positiony);
   }
   handleTouchStart(event, positionX, positionY) {
@@ -141,18 +195,12 @@ export default class VideoCroper extends React.Component {
         left
       }
     };
-    this.setState({
-      startPosition
-    });
+    this.startPosition = startPosition;
     this.setResizingMode("touch", positionX, positionY);
-  }
-  updateOption() {
-    const {top, right, bottom, left} = this.state;
-    this.props.setSize({top, right, bottom, left});
   }
   setResizingMode(type, positionY, positionX) {
     if (positionX === "c" || positionY === "c") {
-      const resizeFunction = positionY === "c" ? positionX === "l" ? this.moveLeft : this.moveRight : positionY === "t" ? this.moveTop : this.moveBottom;
+      const resizeFunction = positionY === "c" ? positionX === "l" ? this.resizeLeft : this.resizeRight : positionY === "t" ? this.resizeTop : this.resizeBottom;
       if (type === "touch") {
         document.addEventListener("touchmove", resizeFunction, {
           passive: true
@@ -171,7 +219,7 @@ export default class VideoCroper extends React.Component {
         }, {once: true});
       }
     } else {
-      const resizeFunction = positionY === "t" ? positionX === "l" ? this.moveTopLeft : this.moveTopRight : positionX === "l" ? this.moveBottomLeft : this.moveBottomRight;
+      const resizeFunction = positionY === "t" ? positionX === "l" ? this.resizeTopLeft : this.resizeTopRight : positionX === "l" ? this.resizeBottomLeft : this.resizeBottomRight;
       if (type === "touch") {
         document.addEventListener("touchmove", resizeFunction, {
           passive: true
@@ -191,6 +239,10 @@ export default class VideoCroper extends React.Component {
       }
     }
   }
+  updateOption() {
+    const {top, right, bottom, left} = this.state;
+    this.props.setSize({top, right, bottom, left});
+  }
   render() {
     const {top, right, bottom, left} = this.state;
     return /* @__PURE__ */ React.createElement("div", {
@@ -202,6 +254,10 @@ export default class VideoCroper extends React.Component {
         left: `${left}px`
       }
     }, /* @__PURE__ */ React.createElement("div", {
+      className: "option__resize__move",
+      onMouseDown: this.handleMove,
+      onTouchStart: this.handleMove
+    }), /* @__PURE__ */ React.createElement("div", {
       className: "optin__resize__point option__resize__point--top--left",
       onMouseDown: (event) => {
         this.handleMouseDown(event, "t", "l");
