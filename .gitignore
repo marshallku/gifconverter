@@ -3,6 +3,7 @@ node_modules
 
 # Compiled Source
 dist
+build
 
 # Logs
 *.log
