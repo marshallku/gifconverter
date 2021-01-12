@@ -253,96 +253,67 @@ export default class VideoCroper extends React.Component<
         });
     };
 
+    addResizeEvent(
+        type: "touch" | "mouse",
+        eventListener: (event: any) => void
+    ) {
+        if (type === "touch") {
+            document.addEventListener("touchmove", eventListener, {
+                passive: true,
+            });
+
+            document.addEventListener(
+                "touchend",
+                () => {
+                    document.removeEventListener("touchmove", eventListener);
+                    this.updateOption();
+                },
+                { once: true }
+            );
+        } else {
+            document.addEventListener("mousemove", eventListener, {
+                passive: true,
+            });
+
+            document.addEventListener(
+                "mouseup",
+                () => {
+                    document.removeEventListener("mousemove", eventListener);
+                    this.updateOption();
+                },
+                { once: true }
+            );
+        }
+    }
+
     setResizingMode(
         type: "touch" | "mouse",
         positionY: string,
         positionX: string
     ) {
         if (positionX === "c" || positionY === "c") {
-            const resizeFunction =
-                positionY === "c"
-                    ? positionX === "l"
-                        ? this.resizeLeft
-                        : this.resizeRight
-                    : positionY === "t"
-                    ? this.resizeTop
-                    : this.resizeBottom;
-
-            if (type === "touch") {
-                document.addEventListener("touchmove", resizeFunction, {
-                    passive: true,
-                });
-
-                document.addEventListener(
-                    "touchend",
-                    () => {
-                        document.removeEventListener(
-                            "touchmove",
-                            resizeFunction
-                        );
-                        this.updateOption();
-                    },
-                    { once: true }
-                );
+            if (positionY === "c") {
+                if (positionX === "l") {
+                    this.addResizeEvent(type, this.resizeLeft);
+                } else {
+                    this.addResizeEvent(type, this.resizeRight);
+                }
+            } else if (positionY === "t") {
+                this.addResizeEvent(type, this.resizeTop);
             } else {
-                document.addEventListener("mousemove", resizeFunction, {
-                    passive: true,
-                });
-
-                document.addEventListener(
-                    "mouseup",
-                    () => {
-                        document.removeEventListener(
-                            "mousemove",
-                            resizeFunction
-                        );
-                        this.updateOption();
-                    },
-                    { once: true }
-                );
+                this.addResizeEvent(type, this.resizeBottom);
             }
         } else {
-            const resizeFunction =
-                positionY === "t"
-                    ? positionX === "l"
-                        ? this.resizeTopLeft
-                        : this.resizeTopRight
-                    : positionX === "l"
-                    ? this.resizeBottomLeft
-                    : this.resizeBottomRight;
-
-            if (type === "touch") {
-                document.addEventListener("touchmove", resizeFunction, {
-                    passive: true,
-                });
-
-                document.addEventListener(
-                    "touchend",
-                    () => {
-                        document.removeEventListener(
-                            "touchmove",
-                            resizeFunction
-                        );
-                        this.updateOption();
-                    },
-                    { once: true }
-                );
+            if (positionY === "t") {
+                if (positionX === "l") {
+                    this.addResizeEvent(type, this.resizeTopLeft);
+                } else {
+                    this.addResizeEvent(type, this.resizeTopRight);
+                }
+            } else if (positionX === "l") {
+                this.addResizeEvent(type, this.resizeBottomLeft);
             } else {
-                document.addEventListener("mousemove", resizeFunction, {
-                    passive: true,
-                });
-
-                document.addEventListener(
-                    "mouseup",
-                    () => {
-                        document.removeEventListener(
-                            "mousemove",
-                            resizeFunction
-                        );
-                        this.updateOption();
-                    },
-                    { once: true }
-                );
+                this.addResizeEvent(type, this.resizeBottomRight);
             }
         }
     }
