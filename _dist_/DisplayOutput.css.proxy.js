@@ -1,6 +1,6 @@
 // [snowpack] add styles to the page (skip if no document exists)
 if (typeof document !== 'undefined') {
-  const code = ".output {\r\n    display: block;\r\n    margin: 0;\r\n}\r\n\r\n.output__file {\r\n    display: block;\r\n    max-width: 80vw;\r\n    max-height: calc(80vh - 5rem);\r\n    margin-bottom: 10px;\r\n}\r\n";
+  const code = ".output {\n    display: block;\n    margin: 0;\n}\n\n.output__file {\n    display: block;\n    max-width: 80vw;\n    max-height: calc(80vh - 5rem);\n    margin-bottom: 10px;\n}\n";
 
   const styleEl = document.createElement("style");
   const codeEl = document.createTextNode(code);
