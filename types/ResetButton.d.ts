@@ -1,0 +1,3 @@
+interface ResetButtonProps {
+    reset: () => void;
+}

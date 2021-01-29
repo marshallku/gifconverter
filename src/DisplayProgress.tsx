@@ -1,27 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Loader from "./Loader";
 import "./DisplayProgress.css";
 
-export default class DisplayProgress extends React.Component<
-    DisplayProgressProps,
-    DisplayProgressStates
-> {
-    constructor(props: DisplayProgressProps) {
-        super(props);
-        window.displayProgress = this;
-        this.state = {
-            ratio: 0,
-        };
-    }
+export default function DisplayProgress() {
+    const [ratio, setRatio] = useState<number>(0);
 
-    render() {
-        const { ratio } = this.state;
+    window.setRatio = setRatio;
 
-        return (
-            <div className="progress">
-                <Loader />
-                <div>{Math.round(ratio * 100)} %</div>
-            </div>
-        );
-    }
+    return (
+        <div className="progress">
+            <Loader />
+            <div>{Math.round(ratio * 100)} %</div>
+        </div>
+    );
 }

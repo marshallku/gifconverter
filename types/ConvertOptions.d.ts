@@ -21,7 +21,3 @@ interface OptionInputProps {
     max?: string;
     video?: HTMLVideoElement;
 }
-
-interface OptionInputStates {
-    value: string;
-}

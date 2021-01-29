@@ -13,15 +13,13 @@ const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
 
 declare global {
     interface Window {
-        displayProgress: React.Component;
+        setRatio: React.Dispatch<React.SetStateAction<number>>;
         videoResizer: React.Component<VideoResizerProps, VideoResizerStates>;
     }
 }
 
 function progressRatio(status: { ratio: number }) {
-    window.displayProgress.setState({
-        ratio: status.ratio,
-    });
+    window.setRatio(status.ratio);
 }
 
 function App() {

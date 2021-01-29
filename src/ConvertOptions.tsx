@@ -1,76 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import VideoCroper from "./VideoCropper";
 import "./ConvertOptions.css";
 
-class OptionInput extends React.Component<OptionInputProps, OptionInputStates> {
-    constructor(props: OptionInputProps) {
-        super(props);
-        this.state = {
-            value: this.props.value,
-        };
-    }
+function OptionInput(props: OptionInputProps) {
+    const [value, setValue] = useState<string>(props.value);
+    const { video } = props;
 
-    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
-        this.setState({
-            value: value,
-        });
 
-        this.props.onUpdate(this.props.option, value);
+        setValue(value);
+        props.onUpdate(props.option, value);
     };
 
-    handleClick = () => {
-        const { video } = this.props;
-
+    const handleClick = () => {
         if (video) {
             const { currentTime } = video;
 
-            this.setState({
-                value: `${currentTime}`,
-            });
-            this.props.onUpdate(this.props.option, `${currentTime}`);
+            setValue(`${currentTime}`);
+            props.onUpdate(props.option, `${currentTime}`);
         }
     };
 
-    render() {
-        const { video } = this.props;
-        return (
-            <div>
-                <input
-                    type="number"
-                    min={this.props.min}
-                    max={this.props.max ? this.props.max : ""}
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    step={`${this.props.option.includes("Time") ? 0.01 : 1}`}
-                />
-                {!!video && (
-                    <button onClick={this.handleClick} title="Current Time">
-                        <svg viewBox="0 0 256 256">
-                            <circle
-                                cx="128"
-                                cy="128"
-                                r="96"
-                                fill="none"
-                                stroke="#000"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="24"
-                            />
-                            <polyline
-                                points="128 72 128 128 184 128"
-                                fill="none"
-                                stroke="#000"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="24"
-                            />
-                        </svg>
-                    </button>
-                )}
-            </div>
-        );
-    }
+    return (
+        <div>
+            <input
+                type="number"
+                min={props.min}
+                max={props.max ? props.max : ""}
+                value={value}
+                onChange={handleChange}
+                step={`${props.option.includes("Time") ? 0.01 : 1}`}
+            />
+            {!!video && (
+                <button onClick={handleClick} title="Current Time">
+                    <svg viewBox="0 0 256 256">
+                        <circle
+                            cx="128"
+                            cy="128"
+                            r="96"
+                            fill="none"
+                            stroke="#000"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="24"
+                        />
+                        <polyline
+                            points="128 72 128 128 184 128"
+                            fill="none"
+                            stroke="#000"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="24"
+                        />
+                    </svg>
+                </button>
+            )}
+        </div>
+    );
 }
 
 export default class ConvertOptions extends React.Component<
