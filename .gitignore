@@ -1,4 +1,22 @@
-.build
-build
-web_modules
+# Modules
 node_modules
+
+# Compiled Source
+dist
+build
+
+# Logs
+*.log
+
+# DB
+*.sql
+*.sqlite
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

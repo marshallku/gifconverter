@@ -10,11 +10,11 @@ export default function DisplayOutput(props: DisplayOutputProps) {
         const MB = KB * KB;
 
         if (byte > MB) {
-            return `${Math.round(byte / MB)} MB`;
+            return `${(byte / MB).toFixed(3)} MB`;
         } else if (byte > KB) {
-            return `${Math.round(byte / KB)} KB`;
+            return `${(byte / KB).toFixed(3)} KB`;
         } else {
-            return `${Math.round(byte)} B`;
+            return `${byte.toFixed(3)} B`;
         }
     };
 
