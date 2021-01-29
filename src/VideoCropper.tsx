@@ -35,9 +35,12 @@ export default class VideoCroper extends React.Component<
             },
         };
 
-        this.updateVideoSize();
         window.videoResizer = this;
     }
+
+    componentDidMount = () => {
+        this.updateVideoSize();
+    };
 
     updateVideoSize() {
         // Add delays to load it after css applied
