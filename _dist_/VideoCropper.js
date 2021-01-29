@@ -3,6 +3,9 @@ import "./VideoCropper.css.proxy.js";
 export default class VideoCroper extends React.Component {
   constructor(props) {
     super(props);
+    this.componentDidMount = () => {
+      this.updateVideoSize();
+    };
     this.resizeTop = (event) => {
       const {startPosition} = this;
       const {video} = this.state;
@@ -155,7 +158,6 @@ export default class VideoCroper extends React.Component {
         left: 0
       }
     };
-    this.updateVideoSize();
     window.videoResizer = this;
   }
   updateVideoSize() {

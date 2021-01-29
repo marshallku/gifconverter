@@ -10,9 +10,7 @@ import {createFFmpeg, fetchFile} from "../web_modules/@ffmpeg/ffmpeg.js";
 import "./App.css.proxy.js";
 const ffmpeg = createFFmpeg({progress: progressRatio});
 function progressRatio(status) {
-  window.displayProgress.setState({
-    ratio: status.ratio
-  });
+  window.setRatio(status.ratio);
 }
 function App() {
   const [loadable, setLoadable] = useState(!!window.SharedArrayBuffer);

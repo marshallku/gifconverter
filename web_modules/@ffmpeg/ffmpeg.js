@@ -1135,53 +1135,54 @@ void (function(root, factory) {
 }));
 });
 
-const _args = [
-  [
-    "@ffmpeg/ffmpeg@0.9.6",
-    "/Library/WebServer/Documents/gifconverter"
-  ]
-];
-const _from = "@ffmpeg/ffmpeg@0.9.6";
-const _id = "@ffmpeg/ffmpeg@0.9.6";
-const _inBundle = false;
-const _integrity = "sha512-ov5FAV3dHRJ/+ZxQH9V5GvY/iczwq5vrKWeu4tpytxZewTSAhZ1aKD/sFBzd79nQNF+CTktxUp3LWuGECXBNeA==";
-const _location = "/@ffmpeg/ffmpeg";
-const _phantomChildren = {
+const name = "@ffmpeg/ffmpeg";
+const version$1 = "0.9.6";
+const description = "FFmpeg WebAssembly version";
+const main = "src/index.js";
+const types = "src/index.d.ts";
+const directories = {
+  example: "examples"
 };
-const _requested = {
-  type: "version",
-  registry: true,
-  raw: "@ffmpeg/ffmpeg@0.9.6",
-  name: "@ffmpeg/ffmpeg",
-  escapedName: "@ffmpeg%2fffmpeg",
-  scope: "@ffmpeg",
-  rawSpec: "0.9.6",
-  saveSpec: null,
-  fetchSpec: "0.9.6"
-};
-const _requiredBy = [
-  "/"
-];
-const _resolved = "https://registry.npmjs.org/@ffmpeg/ffmpeg/-/ffmpeg-0.9.6.tgz";
-const _spec = "0.9.6";
-const _where = "/Library/WebServer/Documents/gifconverter";
-const author = {
-  name: "Jerome Wu",
-  email: "jeromewus@gmail.com"
+const scripts = {
+  start: "node scripts/server.js",
+  build: "rimraf dist && webpack --config scripts/webpack.config.prod.js",
+  prepublishOnly: "npm run build",
+  lint: "eslint src",
+  wait: "rimraf dist && wait-on http://localhost:3000/dist/ffmpeg.dev.js",
+  test: "npm-run-all -p -r start test:all",
+  "test:all": "npm-run-all wait test:browser:ffmpeg test:node:all",
+  "test:node": "node --experimental-wasm-threads --experimental-wasm-bulk-memory node_modules/.bin/_mocha --exit --bail --require ./scripts/test-helper.js",
+  "test:node:all": "npm run test:node -- ./tests/*.test.js",
+  "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -a incognito -a no-sandbox -a disable-setuid-sandbox -a disable-logging -t 300000",
+  "test:browser:ffmpeg": "npm run test:browser -- -f ./tests/ffmpeg.test.html"
 };
 const browser$1 = {
   "./src/node/index.js": "./src/browser/index.js"
 };
+const repository = {
+  type: "git",
+  url: "git+https://github.com/ffmpegwasm/ffmpeg.wasm.git"
+};
+const keywords = [
+  "ffmpeg",
+  "WebAssembly",
+  "video"
+];
+const author = "Jerome Wu <jeromewus@gmail.com>";
+const license = "MIT";
 const bugs = {
   url: "https://github.com/ffmpegwasm/ffmpeg.wasm/issues"
 };
+const engines = {
+  node: ">=12.16.1"
+};
+const homepage = "https://github.com/ffmpegwasm/ffmpeg.wasm#readme";
 const dependencies = {
   "is-url": "^1.2.4",
   "node-fetch": "^2.6.1",
   "regenerator-runtime": "^0.13.7",
   "resolve-url": "^0.2.1"
 };
-const description = "FFmpeg WebAssembly version";
 const devDependencies = {
   "@babel/core": "^7.12.3",
   "@babel/preset-env": "^7.12.1",
@@ -1202,70 +1203,24 @@ const devDependencies = {
   "webpack-cli": "^4.1.0",
   "webpack-dev-middleware": "^4.0.0"
 };
-const directories = {
-  example: "examples"
-};
-const engines = {
-  node: ">=12.16.1"
-};
-const homepage = "https://github.com/ffmpegwasm/ffmpeg.wasm#readme";
-const keywords = [
-  "ffmpeg",
-  "WebAssembly",
-  "video"
-];
-const license = "MIT";
-const main = "src/index.js";
-const name = "@ffmpeg/ffmpeg";
-const repository = {
-  type: "git",
-  url: "git+https://github.com/ffmpegwasm/ffmpeg.wasm.git"
-};
-const scripts = {
-  build: "rimraf dist && webpack --config scripts/webpack.config.prod.js",
-  lint: "eslint src",
-  prepublishOnly: "npm run build",
-  start: "node scripts/server.js",
-  test: "npm-run-all -p -r start test:all",
-  "test:all": "npm-run-all wait test:browser:ffmpeg test:node:all",
-  "test:browser": "mocha-headless-chrome -a allow-file-access-from-files -a incognito -a no-sandbox -a disable-setuid-sandbox -a disable-logging -t 300000",
-  "test:browser:ffmpeg": "npm run test:browser -- -f ./tests/ffmpeg.test.html",
-  "test:node": "node --experimental-wasm-threads --experimental-wasm-bulk-memory node_modules/.bin/_mocha --exit --bail --require ./scripts/test-helper.js",
-  "test:node:all": "npm run test:node -- ./tests/*.test.js",
-  wait: "rimraf dist && wait-on http://localhost:3000/dist/ffmpeg.dev.js"
-};
-const types = "src/index.d.ts";
-const version$1 = "0.9.6";
 var require$$3 = {
-  _args: _args,
-  _from: _from,
-  _id: _id,
-  _inBundle: _inBundle,
-  _integrity: _integrity,
-  _location: _location,
-  _phantomChildren: _phantomChildren,
-  _requested: _requested,
-  _requiredBy: _requiredBy,
-  _resolved: _resolved,
-  _spec: _spec,
-  _where: _where,
-  author: author,
-  browser: browser$1,
-  bugs: bugs,
-  dependencies: dependencies,
+  name: name,
+  version: version$1,
   description: description,
-  devDependencies: devDependencies,
+  main: main,
+  types: types,
   directories: directories,
+  scripts: scripts,
+  browser: browser$1,
+  repository: repository,
+  keywords: keywords,
+  author: author,
+  license: license,
+  bugs: bugs,
   engines: engines,
   homepage: homepage,
-  keywords: keywords,
-  license: license,
-  main: main,
-  name: name,
-  repository: repository,
-  scripts: scripts,
-  types: types,
-  version: version$1
+  dependencies: dependencies,
+  devDependencies: devDependencies
 };
 
 const { devDependencies: devDependencies$1 } = require$$3;

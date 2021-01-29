@@ -1,10 +1,9 @@
 import React from "../web_modules/react.js";
 import "./DisplayOutput.css.proxy.js";
-export default class DisplayOutput extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  convertData(byte) {
+export default function DisplayOutput(props) {
+  const {output} = props;
+  const {blob, url} = output;
+  const convertData = (byte) => {
     const KB = 1024;
     const MB = KB * KB;
     if (byte > MB) {
@@ -14,24 +13,20 @@ export default class DisplayOutput extends React.Component {
     } else {
       return `${byte.toFixed(3)} B`;
     }
-  }
-  render() {
-    const {output} = this.props;
-    const {blob, url} = output;
-    return blob.type === "image/gif" ? /* @__PURE__ */ React.createElement("figure", {
-      className: "output"
-    }, /* @__PURE__ */ React.createElement("img", {
-      className: "output__file",
-      src: url
-    }), /* @__PURE__ */ React.createElement("figcaption", null, this.convertData(blob.size))) : /* @__PURE__ */ React.createElement("figure", {
-      className: "output"
-    }, /* @__PURE__ */ React.createElement("video", {
-      className: "output__file",
-      src: url,
-      autoPlay: true,
-      playsInline: true,
-      muted: true,
-      loop: true
-    }), /* @__PURE__ */ React.createElement("figcaption", null, this.convertData(blob.size)));
-  }
+  };
+  return blob.type === "image/gif" ? /* @__PURE__ */ React.createElement("figure", {
+    className: "output"
+  }, /* @__PURE__ */ React.createElement("img", {
+    className: "output__file",
+    src: url
+  }), /* @__PURE__ */ React.createElement("figcaption", null, convertData(blob.size))) : /* @__PURE__ */ React.createElement("figure", {
+    className: "output"
+  }, /* @__PURE__ */ React.createElement("video", {
+    className: "output__file",
+    src: url,
+    autoPlay: true,
+    playsInline: true,
+    muted: true,
+    loop: true
+  }), /* @__PURE__ */ React.createElement("figcaption", null, convertData(blob.size)));
 }

@@ -1,62 +1,50 @@
-import React from "../web_modules/react.js";
+import React, {useState} from "../web_modules/react.js";
 import VideoCroper from "./VideoCropper.js";
 import "./ConvertOptions.css.proxy.js";
-class OptionInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = (event) => {
-      const {value} = event.target;
-      this.setState({
-        value
-      });
-      this.props.onUpdate(this.props.option, value);
-    };
-    this.handleClick = () => {
-      const {video} = this.props;
-      if (video) {
-        const {currentTime} = video;
-        this.setState({
-          value: `${currentTime}`
-        });
-        this.props.onUpdate(this.props.option, `${currentTime}`);
-      }
-    };
-    this.state = {
-      value: this.props.value
-    };
-  }
-  render() {
-    const {video} = this.props;
-    return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("input", {
-      type: "number",
-      min: this.props.min,
-      max: this.props.max ? this.props.max : "",
-      value: this.state.value,
-      onChange: this.handleChange,
-      step: `${this.props.option.includes("Time") ? 0.01 : 1}`
-    }), !!video && /* @__PURE__ */ React.createElement("button", {
-      onClick: this.handleClick,
-      title: "Current Time"
-    }, /* @__PURE__ */ React.createElement("svg", {
-      viewBox: "0 0 256 256"
-    }, /* @__PURE__ */ React.createElement("circle", {
-      cx: "128",
-      cy: "128",
-      r: "96",
-      fill: "none",
-      stroke: "#000",
-      strokeLinecap: "round",
-      strokeLinejoin: "round",
-      strokeWidth: "24"
-    }), /* @__PURE__ */ React.createElement("polyline", {
-      points: "128 72 128 128 184 128",
-      fill: "none",
-      stroke: "#000",
-      strokeLinecap: "round",
-      strokeLinejoin: "round",
-      strokeWidth: "24"
-    }))));
-  }
+function OptionInput(props) {
+  const [value, setValue] = useState(props.value);
+  const {video} = props;
+  const handleChange = (event) => {
+    const {value: value2} = event.target;
+    setValue(value2);
+    props.onUpdate(props.option, value2);
+  };
+  const handleClick = () => {
+    if (video) {
+      const {currentTime} = video;
+      setValue(`${currentTime}`);
+      props.onUpdate(props.option, `${currentTime}`);
+    }
+  };
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("input", {
+    type: "number",
+    min: props.min,
+    max: props.max ? props.max : "",
+    value,
+    onChange: handleChange,
+    step: `${props.option.includes("Time") ? 0.01 : 1}`
+  }), !!video && /* @__PURE__ */ React.createElement("button", {
+    onClick: handleClick,
+    title: "Current Time"
+  }, /* @__PURE__ */ React.createElement("svg", {
+    viewBox: "0 0 256 256"
+  }, /* @__PURE__ */ React.createElement("circle", {
+    cx: "128",
+    cy: "128",
+    r: "96",
+    fill: "none",
+    stroke: "#000",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: "24"
+  }), /* @__PURE__ */ React.createElement("polyline", {
+    points: "128 72 128 128 184 128",
+    fill: "none",
+    stroke: "#000",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: "24"
+  }))));
 }
 export default class ConvertOptions extends React.Component {
   constructor(props) {
