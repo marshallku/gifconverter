@@ -25,8 +25,8 @@
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
-    "@ffmpeg/core": "^0.8.5",
-    "@ffmpeg/ffmpeg": "^0.9.6",
+    "@ffmpeg/core": "^0.10.0",
+    "@ffmpeg/ffmpeg": "^0.10.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
@@ -34,17 +34,17 @@
     "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-react-refresh": "^2.3.8",
     "@snowpack/plugin-typescript": "^1.1.1",
-    "@snowpack/web-test-runner-plugin": "^0.1.5",
-    "@testing-library/react": "^11.2.2",
+    "@snowpack/web-test-runner-plugin": "^0.2.2",
+    "@testing-library/react": "^12.0.0",
     "@types/chai": "^4.2.13",
-    "@types/react": "^16.14.2",
-    "@types/react-dom": "^16.9.10",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
     "@types/snowpack-env": "^2.3.2",
-    "@web/test-runner": "^0.10.2",
+    "@web/test-runner": "^0.13.16",
     "chai": "^4.2.0",
     "gh-pages": "^3.1.0",
     "prettier": "^2.2.1",
-    "snowpack": "^2.18.2",
+    "snowpack": "^3.8.7",
     "typescript": "^4.1.2"
   }
 }
