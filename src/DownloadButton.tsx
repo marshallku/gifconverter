@@ -2,15 +2,10 @@ import React from "react";
 import "./DownloadButton.css";
 
 export default function DownloadButton(props: DownloadButtonProps) {
-    const formatFileName = () => {
-        let { fileName } = props;
-        const outputExtension =
-            props.fileExtension === "image/gif" ? "mp4" : "gif";
-        fileName = fileName.replace(/\..(gif|mp4)/, "");
-        fileName = `${fileName}.${outputExtension}`;
-
-        return fileName;
-    };
+    const formatFileName = () =>
+        `${props.fileName.replace(/\.(gif|mp4)/, "")}.${
+            props.fileExtension === "image/gif" ? "mp4" : "gif"
+        }`;
 
     return (
         <a
