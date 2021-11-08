@@ -16,7 +16,7 @@
     cursor: move;
 }
 
-.optin__resize__point {
+.option__resize__point {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -27,7 +27,7 @@
     transition: transform 0.25s ease-in-out;
 }
 
-.optin__resize__point:hover {
+.option__resize__point:hover {
     transform: scale(1);
 }
 

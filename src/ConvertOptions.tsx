@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import VideoCroper from "./VideoCropper";
+import VideoCropper from "./VideoCropper";
 import "./ConvertOptions.css";
 
 function OptionInput(props: OptionInputProps) {
@@ -179,7 +179,10 @@ export default class ConvertOptions extends React.Component<
                             draggable="false"
                         ></video>
                         {!!video && (
-                            <VideoCroper video={video} setSize={this.setSize} />
+                            <VideoCropper
+                                video={video}
+                                setSize={this.setSize}
+                            />
                         )}
                     </div>
                     {!!video && (

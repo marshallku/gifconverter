@@ -1,16 +1,16 @@
 import React from "react";
 import "./VideoCropper.css";
 
-export default class VideoCroper extends React.Component<
-    VideoResizerProps,
-    VideoResizerStates
+export default class VideoCropper extends React.Component<
+    VideoCropperProps,
+    VideoCropperStates
 > {
     startPosition: {
         x: number;
         y: number;
         orig: size;
     };
-    constructor(props: VideoResizerProps) {
+    constructor(props: VideoCropperProps) {
         super(props);
 
         this.state = {
@@ -35,7 +35,7 @@ export default class VideoCroper extends React.Component<
             },
         };
 
-        window.videoResizer = this;
+        window.videoCropper = this;
     }
 
     componentDidMount = () => {
@@ -57,7 +57,7 @@ export default class VideoCroper extends React.Component<
     handleMouseDown(
         event: React.MouseEvent,
         positionX: string,
-        positiony: string
+        positionY: string
     ) {
         const { top, right, bottom, left } = this.state;
         const startPosition = {
@@ -72,7 +72,7 @@ export default class VideoCroper extends React.Component<
         };
 
         this.startPosition = startPosition;
-        this.setResizingMode("mouse", positionX, positiony);
+        this.setResizingMode("mouse", positionX, positionY);
     }
 
     handleTouchStart(
@@ -423,7 +423,7 @@ export default class VideoCroper extends React.Component<
                     onTouchStart={this.handleMove}
                 ></div>
                 <div
-                    className="optin__resize__point option__resize__point--top--left"
+                    className="option__resize__point option__resize__point--top--left"
                     onMouseDown={(event) => {
                         this.handleMouseDown(event, "t", "l");
                     }}
@@ -432,7 +432,7 @@ export default class VideoCroper extends React.Component<
                     }}
                 ></div>
                 <div
-                    className="optin__resize__point option__resize__point--top--center"
+                    className="option__resize__point option__resize__point--top--center"
                     onMouseDown={(event) => {
                         this.handleMouseDown(event, "t", "c");
                     }}
@@ -441,7 +441,7 @@ export default class VideoCroper extends React.Component<
                     }}
                 ></div>
                 <div
-                    className="optin__resize__point option__resize__point--top--right"
+                    className="option__resize__point option__resize__point--top--right"
                     onMouseDown={(event) => {
                         this.handleMouseDown(event, "t", "r");
                     }}
@@ -450,7 +450,7 @@ export default class VideoCroper extends React.Component<
                     }}
                 ></div>
                 <div
-                    className="optin__resize__point option__resize__point--center--left"
+                    className="option__resize__point option__resize__point--center--left"
                     onMouseDown={(event) => {
                         this.handleMouseDown(event, "c", "l");
                     }}
@@ -459,7 +459,7 @@ export default class VideoCroper extends React.Component<
                     }}
                 ></div>
                 <div
-                    className="optin__resize__point option__resize__point--center--right"
+                    className="option__resize__point option__resize__point--center--right"
                     onMouseDown={(event) => {
                         this.handleMouseDown(event, "c", "r");
                     }}
@@ -468,7 +468,7 @@ export default class VideoCroper extends React.Component<
                     }}
                 ></div>
                 <div
-                    className="optin__resize__point option__resize__point--bottom--left"
+                    className="option__resize__point option__resize__point--bottom--left"
                     onMouseDown={(event) => {
                         this.handleMouseDown(event, "b", "l");
                     }}
@@ -477,7 +477,7 @@ export default class VideoCroper extends React.Component<
                     }}
                 ></div>
                 <div
-                    className="optin__resize__point option__resize__point--bottom--center"
+                    className="option__resize__point option__resize__point--bottom--center"
                     onMouseDown={(event) => {
                         this.handleMouseDown(event, "b", "c");
                     }}
@@ -486,7 +486,7 @@ export default class VideoCroper extends React.Component<
                     }}
                 ></div>
                 <div
-                    className="optin__resize__point option__resize__point--bottom--right"
+                    className="option__resize__point option__resize__point--bottom--right"
                     onMouseDown={(event) => {
                         this.handleMouseDown(event, "b", "r");
                     }}

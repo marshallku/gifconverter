@@ -14,7 +14,7 @@ const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
 declare global {
     interface Window {
         setRatio: React.Dispatch<React.SetStateAction<number>>;
-        videoResizer: React.Component<VideoResizerProps, VideoResizerStates>;
+        videoCropper: React.Component<VideoCropperProps, VideoCropperStates>;
     }
 }
 

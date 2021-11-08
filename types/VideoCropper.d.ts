@@ -1,4 +1,4 @@
-interface VideoResizerProps {
+interface VideoCropperProps {
     video: HTMLVideoElement;
     setSize: (size: size) => void;
 }
@@ -10,7 +10,7 @@ interface size {
     left: number;
 }
 
-interface VideoResizerStates extends size {
+interface VideoCropperStates extends size {
     video: {
         width: number;
         height: number;
