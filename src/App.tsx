@@ -159,7 +159,10 @@ function App() {
                         {input ? (
                             output ? (
                                 <>
-                                    <DisplayOutput output={output} />
+                                    <DisplayOutput
+                                        input={input.file}
+                                        output={output}
+                                    />
                                     <div className="output__control">
                                         <DownloadButton
                                             fileName={input.file.name}

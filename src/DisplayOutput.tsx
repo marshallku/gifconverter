@@ -2,7 +2,7 @@ import React from "react";
 import "./DisplayOutput.css";
 
 export default function DisplayOutput(props: DisplayOutputProps) {
-    const { output } = props;
+    const { input, output } = props;
     const { blob, url } = output;
 
     const convertData = (byte: number) => {
@@ -18,22 +18,66 @@ export default function DisplayOutput(props: DisplayOutputProps) {
         }
     };
 
+    function Output<
+        T extends React.DetailedHTMLProps<
+            React.ImgHTMLAttributes<HTMLImageElement>,
+            | HTMLImageElement
+            | React.DetailedHTMLProps<
+                  React.VideoHTMLAttributes<HTMLVideoElement>,
+                  HTMLVideoElement
+              >
+        >
+    >({ Input, Output }: { Input: T; Output: T }) {
+        return (
+            <figure className="output">
+                <ul>
+                    <li>
+                        <h2>Original</h2>
+                        {Input}
+                        <figcaption>{convertData(input.size)}</figcaption>
+                    </li>
+                    <li>
+                        <h2>Converted</h2>
+                        {Output}
+                        <figcaption>{convertData(blob.size)}</figcaption>
+                    </li>
+                </ul>
+            </figure>
+        );
+    }
+
     return blob.type === "image/gif" ? (
-        <figure className="output">
-            <img className="output__file" src={url} />
-            <figcaption>{convertData(blob.size)}</figcaption>
-        </figure>
+        <Output
+            Input={
+                <video
+                    className="output__file"
+                    src={URL.createObjectURL(input)}
+                    autoPlay
+                    playsInline
+                    muted
+                    loop
+                ></video>
+            }
+            Output={<img className="output__file" src={url} />}
+        />
     ) : (
-        <figure className="output">
-            <video
-                className="output__file"
-                src={url}
-                autoPlay
-                playsInline
-                muted
-                loop
-            ></video>
-            <figcaption>{convertData(blob.size)}</figcaption>
-        </figure>
+        <Output
+            Input={
+                <img
+                    className="output__file"
+                    src={URL.createObjectURL(input)}
+                />
+            }
+            Output={
+                <video
+                    className="output__file"
+                    src={url}
+                    autoPlay
+                    playsInline
+                    muted
+                    loop
+                ></video>
+            }
+        />
     );
 }
