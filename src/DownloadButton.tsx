@@ -3,9 +3,10 @@ import "./DownloadButton.css";
 
 export default function DownloadButton(props: DownloadButtonProps) {
     const formatFileName = () =>
-        `${props.fileName.replace(/\.(gif|mp4)/, "")}.${
-            props.fileExtension === "image/gif" ? "mp4" : "gif"
-        }`;
+        `${props.fileName
+            .split(".")
+            .slice(0, -1)
+            .join(".")}.${props.fileExtension.split("/").pop()}`;
 
     return (
         <a

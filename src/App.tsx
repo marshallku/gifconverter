@@ -167,7 +167,7 @@ function App() {
                                     <div className="output__control">
                                         <DownloadButton
                                             fileName={input.file.name}
-                                            fileExtension={input.file.type}
+                                            fileExtension={output.blob.type}
                                             outputUrl={output.url}
                                         />
                                         <ResetButton reset={reset} />
