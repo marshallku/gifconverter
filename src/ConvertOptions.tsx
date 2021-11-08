@@ -86,8 +86,13 @@ export default class ConvertOptions extends React.Component<
         };
 
         this.state = {
+            inputBlobUrl: URL.createObjectURL(this.props.input),
             video: null,
         };
+    }
+
+    componentWillUnmount() {
+        URL.revokeObjectURL(this.state.inputBlobUrl);
     }
 
     handleVideoLoad = (
@@ -164,7 +169,7 @@ export default class ConvertOptions extends React.Component<
                 <div className={`${video ? "loaded " : ""}option`}>
                     <div className="option__preview">
                         <video
-                            src={URL.createObjectURL(this.props.input)}
+                            src={this.state.inputBlobUrl}
                             onLoadedMetadata={this.handleVideoLoad}
                             autoPlay
                             playsInline

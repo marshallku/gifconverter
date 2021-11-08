@@ -137,6 +137,7 @@ function App() {
             scale: "0",
             fps: "25",
         });
+        output && URL.revokeObjectURL(output.url);
         setInput(undefined);
         setOutput(undefined);
     };

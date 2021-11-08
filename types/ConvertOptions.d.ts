@@ -10,6 +10,7 @@ interface ConvertOptionsProps {
 
 interface ConvertOptionsStates {
     video: HTMLVideoElement | null;
+    inputBlobUrl: string;
     size?: size;
 }
 

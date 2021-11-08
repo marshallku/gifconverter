@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./DisplayOutput.css";
 
 export default function DisplayOutput(props: DisplayOutputProps) {
     const { input, output } = props;
+    const inputBlobUrl = URL.createObjectURL(input);
     const { blob, url } = output;
 
     const convertData = (byte: number) => {
@@ -46,12 +47,18 @@ export default function DisplayOutput(props: DisplayOutputProps) {
         );
     }
 
+    useEffect(() => {
+        return () => {
+            URL.revokeObjectURL(inputBlobUrl);
+        };
+    }, []);
+
     return blob.type === "image/gif" ? (
         <Output
             Input={
                 <video
                     className="output__file"
-                    src={URL.createObjectURL(input)}
+                    src={inputBlobUrl}
                     autoPlay
                     playsInline
                     muted
@@ -62,12 +69,7 @@ export default function DisplayOutput(props: DisplayOutputProps) {
         />
     ) : (
         <Output
-            Input={
-                <img
-                    className="output__file"
-                    src={URL.createObjectURL(input)}
-                />
-            }
+            Input={<img className="output__file" src={inputBlobUrl} />}
             Output={
                 <video
                     className="output__file"
