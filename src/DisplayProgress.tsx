@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Loader from "./Loader";
 import "./DisplayProgress.css";
 
 export default function DisplayProgress() {
@@ -9,7 +8,18 @@ export default function DisplayProgress() {
 
     return (
         <div className="progress">
-            <Loader />
+            <svg viewBox="0 0 200 200" width="200" height="200">
+                <circle
+                    cx="100"
+                    cy="100"
+                    r="80"
+                    stroke="#f1718c"
+                    strokeWidth="10"
+                    fill="transparent"
+                    strokeDasharray="502"
+                    strokeDashoffset={`${502 - Math.round(ratio * 502)}`}
+                />
+            </svg>
             <div>{Math.round(ratio * 100)} %</div>
         </div>
     );
