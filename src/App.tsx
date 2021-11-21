@@ -18,7 +18,13 @@ declare global {
     }
 }
 
-function progressRatio(status: { ratio: number }) {
+function progressRatio(status: {
+    duration?: number;
+    ratio: number;
+    time?: number;
+}) {
+    if (status.duration) return;
+    console.log(status);
     window.setRatio(status.ratio);
 }
 

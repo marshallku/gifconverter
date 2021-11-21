@@ -48,6 +48,8 @@ export default function DisplayOutput(props: DisplayOutputProps) {
     }
 
     useEffect(() => {
+        window.setRatio(0);
+
         return () => {
             URL.revokeObjectURL(inputBlobUrl);
         };
