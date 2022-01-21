@@ -1,8 +1,8 @@
 # Gif Converter with WASM
 
-![Preview](https://marshall-ku.github.io/gifconverter/preview.jpg)
+![Preview](https://marshallku.github.io/gifconverter/preview.jpg)
 
-[App](https://marshall-ku.com/gifconverter/)
+[App](https://marshallku.com/gifconverter/)
 
 Convert GIF to MP4, MP4 to GIF just in client side with ffmpeg
 
