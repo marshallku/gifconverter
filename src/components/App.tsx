@@ -23,8 +23,10 @@ function progressRatio(status: {
     ratio: number;
     time?: number;
 }) {
-    if (status.duration) return;
-    console.log(status);
+    if (status.duration) {
+        return;
+    }
+
     window.setRatio(status.ratio);
 }
 
@@ -47,14 +49,16 @@ function App() {
     });
 
     const load = async () => {
-        if (loadable) {
-            try {
-                await ffmpeg.load();
-                setReady(true);
-            } catch (error) {
-                console.error(error);
-                setLoadable(false);
-            }
+        if (!loadable) {
+            return;
+        }
+
+        try {
+            await ffmpeg.load();
+            setReady(true);
+        } catch (error) {
+            console.error(error);
+            setLoadable(false);
         }
     };
 
@@ -66,7 +70,10 @@ function App() {
     };
 
     const convertFile = async () => {
-        if (input === undefined) return;
+        if (!input) {
+            return;
+        }
+
         const { file, type } = input;
 
         if (type === "image/gif") {
@@ -95,45 +102,47 @@ function App() {
                 blob,
                 url,
             });
-        } else {
-            // convert mp4 to gif
-            const { startTime, endTime, scale, fps, crop } = gifOption;
 
-            ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
-            await ffmpeg.run(
-                "-f",
-                "mp4",
-                "-i",
-                "input.mp4",
-                `${startTime ? "-ss" : ""}`,
-                `${startTime ? startTime : ""}`,
-                "-t",
-                `${endTime ? endTime : "10"}`,
-                "-loop",
-                "0",
-                // "-filter:v",
-                // `crop=${crop}`,
-                // "-c:a",
-                // "copy",
-                "-filter_complex",
-                `fps=${fps}${
-                    crop ? `,crop=${crop}` : ""
-                },scale=${scale}:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse`,
-                "output.gif",
-                "-pix_fmt",
-                "rgb24"
-            );
-
-            const data = ffmpeg.FS("readFile", "output.gif");
-            const blob = new Blob([data.buffer], { type: "image/gif" });
-            const url = URL.createObjectURL(blob);
-
-            setOutput({
-                blob,
-                url,
-            });
-            setConverting(false);
+            return;
         }
+
+        // convert mp4 to gif
+        const { startTime, endTime, scale, fps, crop } = gifOption;
+
+        ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
+        await ffmpeg.run(
+            "-f",
+            "mp4",
+            "-i",
+            "input.mp4",
+            `${startTime ? "-ss" : ""}`,
+            `${startTime ? startTime : ""}`,
+            "-t",
+            `${endTime ? endTime : "10"}`,
+            "-loop",
+            "0",
+            // "-filter:v",
+            // `crop=${crop}`,
+            // "-c:a",
+            // "copy",
+            "-filter_complex",
+            `fps=${fps}${
+                crop ? `,crop=${crop}` : ""
+            },scale=${scale}:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse`,
+            "output.gif",
+            "-pix_fmt",
+            "rgb24"
+        );
+
+        const data = ffmpeg.FS("readFile", "output.gif");
+        const blob = new Blob([data.buffer], { type: "image/gif" });
+        const url = URL.createObjectURL(blob);
+
+        setOutput({
+            blob,
+            url,
+        });
+        setConverting(false);
     };
 
     const reset = () => {
@@ -158,55 +167,50 @@ function App() {
         }
     }, [input]);
 
+    if (!loadable) {
+        return (
+            <div>
+                <h2 style={{ fontSize: "3rem" }}>Browser not supported 😥</h2>
+            </div>
+        );
+    }
+
+    if (!ready) {
+        return <Loader />;
+    }
+
+    if (!input) {
+        return <FilePicker updateFile={updateFile} />;
+    }
+
     return (
         <>
-            {loadable ? (
-                ready ? (
-                    <>
-                        {input ? (
-                            output ? (
-                                <>
-                                    <DisplayOutput
-                                        input={input.file}
-                                        output={output}
-                                    />
-                                    <div className="output__control">
-                                        <DownloadButton
-                                            fileName={input.file.name}
-                                            fileExtension={output.blob.type}
-                                            outputUrl={output.url}
-                                        />
-                                        <ResetButton reset={reset} />
-                                    </div>
-                                </>
-                            ) : input.type === "video/mp4" ? (
-                                converting ? (
-                                    <DisplayProgress />
-                                ) : (
-                                    <ConvertOptions
-                                        input={input.file}
-                                        preConvert={setConverting}
-                                        convert={convertFile}
-                                        gifOption={gifOption}
-                                        setGifOption={setGifOption}
-                                    />
-                                )
-                            ) : (
-                                <DisplayProgress />
-                            )
-                        ) : (
-                            <FilePicker updateFile={updateFile} />
-                        )}
-                    </>
+            {output ? (
+                <>
+                    <DisplayOutput input={input.file} output={output} />
+                    <div className="output__control">
+                        <DownloadButton
+                            fileName={input.file.name}
+                            fileExtension={output.blob.type}
+                            outputUrl={output.url}
+                        />
+                        <ResetButton reset={reset} />
+                    </div>
+                </>
+            ) : input.type === "video/mp4" ? (
+                converting ? (
+                    <DisplayProgress />
                 ) : (
-                    <Loader />
+                    <ConvertOptions
+                        input={input.file}
+                        preConvert={setConverting}
+                        convert={convertFile}
+                        gifOption={gifOption}
+                        setGifOption={setGifOption}
+                    />
                 )
             ) : (
-                <div>
-                    <h2 style={{ fontSize: "3rem" }}>
-                        Browser not supported 😥
-                    </h2>
-                </div>
+                <DisplayProgress />
             )}
         </>
     );
