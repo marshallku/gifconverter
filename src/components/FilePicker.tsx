@@ -7,42 +7,42 @@ export default function FilePicker(props: FilePickerProps) {
     const checkType = (type: string) => {
         if (type === "image/gif" || type === "video/mp4") {
             return true;
-        } else {
-            setDisplayInvalid(true);
-            setTimeout(() => {
-                setDisplayInvalid(false);
-            }, 1500);
-            return false;
         }
+
+        setDisplayInvalid(true);
+        setTimeout(() => {
+            setDisplayInvalid(false);
+        }, 1500);
+
+        return false;
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { files } = event.target;
-
-        if (files !== null && files[0]) {
-            const file = files[0];
-            const { type } = file;
-
-            checkType(type) && props.updateFile(files[0], type);
-        }
-    };
-
-    const handleDrop = (event: React.DragEvent) => {
-        event.preventDefault();
-
-        const dt = event.dataTransfer;
-        const files = dt.files;
-
-        if (!files.length) return;
-
-        const file = files[0];
+    const updateFile = (file: File) => {
         const { type } = file;
 
         checkType(type) && props.updateFile(file, type);
     };
 
-    const handleDragOver = (event: React.DragEvent) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { files } = event.target;
+
+        if (!files || !files.length) {
+            return;
+        }
+
+        updateFile(files[0]);
+    };
+
+    const handleDrop = (event: React.DragEvent) => {
         event.preventDefault();
+
+        const { files } = event.dataTransfer;
+
+        if (!files.length) {
+            return;
+        }
+
+        updateFile(files[0]);
     };
 
     const preventDefault = (event: React.DragEvent) => {
@@ -63,7 +63,7 @@ export default function FilePicker(props: FilePickerProps) {
                 htmlFor="file"
                 onDragEnter={preventDefault}
                 onDragLeave={preventDefault}
-                onDragOver={handleDragOver}
+                onDragOver={preventDefault}
                 onDrop={handleDrop}
             >
                 <svg
