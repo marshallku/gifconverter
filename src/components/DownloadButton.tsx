@@ -1,18 +1,12 @@
-import React from "react";
+import formatFileName from "../utils/formatFileName";
 import "./DownloadButton.css";
 
 export default function DownloadButton(props: DownloadButtonProps) {
-    const formatFileName = () =>
-        `${props.fileName
-            .split(".")
-            .slice(0, -1)
-            .join(".")}.${props.fileExtension.split("/").pop()}`;
-
     return (
         <a
             className="output__control__download button"
             href={props.outputUrl}
-            download={formatFileName()}
+            download={formatFileName(props.fileName, props.fileExtension)}
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
