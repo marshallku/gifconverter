@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import convertData from "../utils/convertFileSize";
 import "./DisplayOutput.css";
 
-export default function DisplayOutput(props: DisplayOutputProps) {
-    const { input, output } = props;
+export default function DisplayOutput({ input, output }: DisplayOutputProps) {
     const inputBlobUrl = URL.createObjectURL(input);
     const { blob, url } = output;
 
@@ -43,21 +42,25 @@ export default function DisplayOutput(props: DisplayOutputProps) {
         };
     }, []);
 
-    return blob.type === "image/gif" ? (
-        <Output
-            Input={
-                <video
-                    className="output__file"
-                    src={inputBlobUrl}
-                    autoPlay
-                    playsInline
-                    muted
-                    loop
-                ></video>
-            }
-            Output={<img className="output__file" src={url} />}
-        />
-    ) : (
+    if (blob.type === "image/gif") {
+        return (
+            <Output
+                Input={
+                    <video
+                        className="output__file"
+                        src={inputBlobUrl}
+                        autoPlay
+                        playsInline
+                        muted
+                        loop
+                    ></video>
+                }
+                Output={<img className="output__file" src={url} />}
+            />
+        );
+    }
+
+    return (
         <Output
             Input={<img className="output__file" src={inputBlobUrl} />}
             Output={

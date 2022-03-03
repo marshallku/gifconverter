@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import VideoCropper from "./VideoCropper";
 import "./ConvertOptions.css";
+import fcls from "src/utils/fcls";
 
-function OptionInput(props: OptionInputProps) {
-    const [value, setValue] = useState<string>(props.value);
-    const { video } = props;
+function OptionInput({
+    video,
+    value: _value,
+    onUpdate,
+    option,
+    min,
+    max,
+}: OptionInputProps) {
+    const [value, setValue] = useState<string>(_value);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
 
         setValue(value);
-        props.onUpdate(props.option, value);
+        onUpdate(option, value);
     };
 
     const handleClick = () => {
@@ -18,7 +25,7 @@ function OptionInput(props: OptionInputProps) {
             const { currentTime } = video;
 
             setValue(`${currentTime}`);
-            props.onUpdate(props.option, `${currentTime}`);
+            onUpdate(option, `${currentTime}`);
         }
     };
 
@@ -26,11 +33,11 @@ function OptionInput(props: OptionInputProps) {
         <div>
             <input
                 type="number"
-                min={props.min}
-                max={props.max ? props.max : ""}
+                min={min}
+                max={max}
                 value={value}
                 onChange={handleChange}
-                step={`${props.option.includes("Time") ? 0.01 : 1}`}
+                step={`${option.includes("Time") ? 0.01 : 1}`}
             />
             {!!video && (
                 <button onClick={handleClick} title="Current Time">
@@ -109,9 +116,7 @@ export default class ConvertOptions extends React.Component<
                     video: video,
                 });
             } else {
-                setTimeout(() => {
-                    checkReadyState();
-                });
+                requestAnimationFrame(checkReadyState);
             }
         };
 
@@ -129,13 +134,16 @@ export default class ConvertOptions extends React.Component<
     convert = () => {
         const { startTime, endTime } = this.options;
 
-        if (startTime >= endTime || endTime === "0") return;
+        if (startTime >= endTime || endTime === "0") {
+            return;
+        }
 
         const { video } = this.state;
 
         if (video) {
             // Get Exact size
             const { top, right, bottom, left } = this.size;
+
             if (top + right + bottom + left) {
                 const videoScale = video.videoWidth / video.offsetWidth;
 
@@ -162,14 +170,14 @@ export default class ConvertOptions extends React.Component<
 
     render() {
         const { startTime, endTime, fps, scale } = this.options;
-        const { video } = this.state;
+        const { video, inputBlobUrl } = this.state;
 
         return (
             <>
-                <div className={`${video ? "loaded " : ""}option`}>
+                <div className={fcls("option", video && "loaded")}>
                     <div className="option__preview">
                         <video
-                            src={this.state.inputBlobUrl}
+                            src={inputBlobUrl}
                             onLoadedMetadata={this.handleVideoLoad}
                             autoPlay
                             playsInline

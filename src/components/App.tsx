@@ -18,16 +18,18 @@ declare global {
     }
 }
 
-function progressRatio(status: {
+function progressRatio({
+    duration,
+    ratio,
+}: {
     duration?: number;
     ratio: number;
-    time?: number;
 }) {
-    if (status.duration) {
+    if (duration) {
         return;
     }
 
-    window.setRatio(status.ratio);
+    window.setRatio(ratio);
 }
 
 function App() {
@@ -78,7 +80,6 @@ function App() {
 
         if (type === "image/gif") {
             // convert gif to mp4
-
             ffmpeg.FS("writeFile", "input.gif", await fetchFile(file));
             await ffmpeg.run(
                 "-f",

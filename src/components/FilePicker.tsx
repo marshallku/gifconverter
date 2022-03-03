@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./FilePicker.css";
 
-export default function FilePicker(props: FilePickerProps) {
+export default function FilePicker({ updateFile }: FilePickerProps) {
     const [displayInvalid, setDisplayInvalid] = useState(false);
 
     const checkType = (type: string) => {
@@ -17,10 +17,10 @@ export default function FilePicker(props: FilePickerProps) {
         return false;
     };
 
-    const updateFile = (file: File) => {
+    const checkAndUpdateFile = (file: File) => {
         const { type } = file;
 
-        checkType(type) && props.updateFile(file, type);
+        checkType(type) && updateFile(file, type);
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +30,7 @@ export default function FilePicker(props: FilePickerProps) {
             return;
         }
 
-        updateFile(files[0]);
+        checkAndUpdateFile(files[0]);
     };
 
     const handleDrop = (event: React.DragEvent) => {
@@ -42,7 +42,7 @@ export default function FilePicker(props: FilePickerProps) {
             return;
         }
 
-        updateFile(files[0]);
+        checkAndUpdateFile(files[0]);
     };
 
     const preventDefault = (event: React.DragEvent) => {

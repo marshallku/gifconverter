@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./DisplayProgress.css";
 
 export default function DisplayProgress() {
     const [ratio, setRatio] = useState<number>(0);
 
-    window.setRatio = setRatio;
+    useEffect(() => {
+        window.setRatio = setRatio;
+    }, [setRatio]);
 
     return (
         <div className="progress">
