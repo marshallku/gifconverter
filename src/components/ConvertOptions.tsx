@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import VideoCropper from "./VideoCropper";
 import "./ConvertOptions.css";
-import fcls from "src/utils/fcls";
+import fcls from "../utils/fcls";
 
 function OptionInput({
     video,
