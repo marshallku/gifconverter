@@ -1,16 +1,16 @@
 interface VideoCropperProps {
     video: HTMLVideoElement;
-    setSize: (size: size) => void;
+    setSize: (size: Size) => void;
 }
 
-interface size {
+interface Size {
     top: number;
     right: number;
     bottom: number;
     left: number;
 }
 
-interface VideoCropperStates extends size {
+interface VideoCropperStates extends Size {
     video: {
         width: number;
         height: number;

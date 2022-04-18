@@ -72,7 +72,7 @@ export default class ConvertOptions extends React.Component<
     ConvertOptionsStates
 > {
     options: GifOption;
-    size: size;
+    size: Size;
     constructor(props: ConvertOptionsProps) {
         super(props);
 
@@ -123,11 +123,11 @@ export default class ConvertOptions extends React.Component<
         checkReadyState();
     };
 
-    updateOption = (option: optionNames, value: string) => {
+    updateOption = (option: OptionField, value: string) => {
         this.options[option] = value;
     };
 
-    setSize = (size: size) => {
+    setSize = (size: Size) => {
         this.size = size;
     };
 

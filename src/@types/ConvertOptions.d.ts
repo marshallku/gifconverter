@@ -1,4 +1,4 @@
-type optionNames = "startTime" | "endTime" | "fps" | "scale";
+type OptionField = "startTime" | "endTime" | "fps" | "scale";
 
 interface ConvertOptionsProps {
     input: File;
@@ -11,13 +11,13 @@ interface ConvertOptionsProps {
 interface ConvertOptionsStates {
     video: HTMLVideoElement | null;
     inputBlobUrl: string;
-    size?: size;
+    size?: Size;
 }
 
 interface OptionInputProps {
     value: string;
-    option: optionNames;
-    onUpdate: (optionName: optionNames, value: string) => void;
+    option: OptionField;
+    onUpdate: (optionName: OptionField, value: string) => void;
     min: string;
     max?: string;
     video?: HTMLVideoElement;
