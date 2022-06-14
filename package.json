@@ -1,50 +1,38 @@
 {
-  "name": "gifconverter",
-  "description": "Convert GIF, MP4 with WASM",
-  "version": "1.0.0",
-  "main": "src/index.tsx",
-  "keywords": [
-    "gif",
-    "mp4",
-    "webm",
-    "wasm"
-  ],
-  "author": "Marshall K",
-  "license": "UNLICENSED",
-  "homepage": "https://marshall-ku.github.io/gifconverter",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marshall-ku/gifconverter.git"
-  },
-  "scripts": {
-    "start": "snowpack dev",
-    "build": "snowpack build",
-    "deploy": "npm run build && gh-pages -t true -d build",
-    "test": "web-test-runner \"src/**/*.test.tsx\"",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
-  },
-  "dependencies": {
-    "@ffmpeg/core": "^0.10.0",
-    "@ffmpeg/ffmpeg": "^0.10.0",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
-  },
-  "devDependencies": {
-    "@snowpack/plugin-dotenv": "^2.0.5",
-    "@snowpack/plugin-react-refresh": "^2.3.8",
-    "@snowpack/plugin-typescript": "^1.1.1",
-    "@snowpack/web-test-runner-plugin": "^0.2.2",
-    "@testing-library/react": "^12.0.0",
-    "@types/chai": "^4.2.13",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "^17.0.9",
-    "@types/snowpack-env": "^2.3.2",
-    "@web/test-runner": "^0.13.16",
-    "chai": "^4.2.0",
-    "gh-pages": "^3.1.0",
-    "prettier": "^2.2.1",
-    "snowpack": "^3.8.7",
-    "typescript": "^4.1.2"
-  }
+    "name": "gifconverter",
+    "description": "Convert GIF, MP4 with WASM",
+    "version": "1.0.0",
+    "main": "src/index.tsx",
+    "keywords": [
+        "gif",
+        "mp4",
+        "webm",
+        "wasm"
+    ],
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "author": "Marshall K",
+    "license": "UNLICENSED",
+    "homepage": "https://marshall-ku.github.io/gifconverter",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marshall-ku/gifconverter.git"
+    },
+    "dependencies": {
+        "@ffmpeg/core": "^0.10.0",
+        "@ffmpeg/ffmpeg": "^0.10.0",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "@vitejs/plugin-react": "^1.3.2",
+        "gh-pages": "^3.1.0",
+        "typescript": "^4.1.2",
+        "vite": "^2.9.12"
+    }
 }

@@ -8,7 +8,7 @@ export default class VideoCropper extends React.Component<
     startPosition: {
         x: number;
         y: number;
-        orig: size;
+        orig: Size;
     };
     constructor(props: VideoCropperProps) {
         super(props);

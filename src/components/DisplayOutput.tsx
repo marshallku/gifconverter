@@ -20,14 +20,18 @@ export default function DisplayOutput({ input, output }: DisplayOutputProps) {
             <figure className="output">
                 <ul>
                     <li>
-                        <h2>Original</h2>
-                        {Input}
-                        <figcaption>{convertData(input.size)}</figcaption>
+                        <>
+                            <h2>Original</h2>
+                            {Input}
+                            <figcaption>{convertData(input.size)}</figcaption>
+                        </>
                     </li>
                     <li>
-                        <h2>Converted</h2>
-                        {Output}
-                        <figcaption>{convertData(blob.size)}</figcaption>
+                        <>
+                            <h2>Converted</h2>
+                            {Output}
+                            <figcaption>{convertData(blob.size)}</figcaption>
+                        </>
                     </li>
                 </ul>
             </figure>
