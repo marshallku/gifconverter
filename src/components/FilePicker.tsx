@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import fcls from "../utils/fcls";
 import "./FilePicker.css";
 
 export default function FilePicker({ updateFile }: FilePickerProps) {
@@ -59,7 +60,10 @@ export default function FilePicker({ updateFile }: FilePickerProps) {
                 onChange={handleChange}
             />
             <label
-                className={`${displayInvalid ? "invalid " : ""}file__label`}
+                className={fcls(
+                    "file__label",
+                    displayInvalid && "file__label--invalid"
+                )}
                 htmlFor="file"
                 onDragEnter={preventDefault}
                 onDragLeave={preventDefault}

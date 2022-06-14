@@ -74,7 +74,7 @@
     cursor: pointer;
 }
 
-.file__label.invalid {
+.file__label--invalid {
     border-color: #dc3545;
     color: #dc3545;
     -webkit-animation: shake 1s ease-in-out both;
