@@ -1,4 +1,3 @@
-import React from "react";
 import "./ResetButton.css";
 
 export default function ResetButton({ reset }: ResetButtonProps) {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
 import { useProgress } from "../store";
+import getFileExtension from "../utils/getFileExtension";
 import FilePicker from "./FilePicker";
 import DisplayProgress from "./DisplayProgress";
 import DisplayOutput from "./DisplayOutput";
@@ -9,7 +10,6 @@ import Loader from "./Loader";
 import DownloadButton from "./DownloadButton";
 import ConvertOptions from "./ConvertOptions";
 import "./App.css";
-import getFileExtension from "../utils/getFileExtension";
 
 const ffmpeg: FFmpeg = createFFmpeg({
     progress: ({ ratio }) => {

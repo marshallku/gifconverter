@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Loader() {
     return (
         <svg viewBox="0 0 200 200" width="200" height="200">
