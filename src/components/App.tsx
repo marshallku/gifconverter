@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import DownloadButton from "./DownloadButton";
 import ConvertOptions from "./ConvertOptions";
 import "./App.css";
+import getFileExtension from "../utils/getFileExtension";
 
 const ffmpeg: FFmpeg = createFFmpeg({
     progress: ({ ratio }) => {
@@ -94,15 +95,16 @@ function App() {
             return;
         }
 
-        // convert mp4 to gif
+        // convert video to gif
         const { startTime, endTime, scale, fps, crop } = gifOption;
+        const extension = getFileExtension(file.name) || "mp4";
 
-        ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
+        ffmpeg.FS("writeFile", `input.${extension}`, await fetchFile(file));
         await ffmpeg.run(
             "-f",
-            "mp4",
+            extension,
             "-i",
-            "input.mp4",
+            `input.${extension}`,
             `${startTime ? "-ss" : ""}`,
             `${startTime ? startTime : ""}`,
             "-t",
@@ -150,7 +152,8 @@ function App() {
     }, []);
 
     useEffect(() => {
-        if (input && input.type !== "video/mp4") {
+        console.log(input);
+        if (input && !input.type.startsWith("video")) {
             convertFile();
         }
     }, [input]);
@@ -185,7 +188,7 @@ function App() {
                         <ResetButton reset={reset} />
                     </div>
                 </>
-            ) : input.type === "video/mp4" ? (
+            ) : input.type.startsWith("video") ? (
                 converting ? (
                     <DisplayProgress />
                 ) : (

@@ -5,7 +5,7 @@ export default function FilePicker({ updateFile }: FilePickerProps) {
     const [displayInvalid, setDisplayInvalid] = useState(false);
 
     const checkType = (type: string) => {
-        if (type === "image/gif" || type === "video/mp4") {
+        if (type === "image/gif" || type.startsWith("video/")) {
             return true;
         }
 
