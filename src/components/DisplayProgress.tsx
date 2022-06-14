@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useProgress } from "../store";
 import "./DisplayProgress.css";
 
 export default function DisplayProgress() {
-    const [ratio, setRatio] = useState<number>(0);
-
-    useEffect(() => {
-        window.setRatio = setRatio;
-    }, [setRatio]);
+    const { progress } = useProgress();
 
     return (
         <div className="progress">
@@ -19,10 +15,10 @@ export default function DisplayProgress() {
                     strokeWidth="10"
                     fill="transparent"
                     strokeDasharray="502"
-                    strokeDashoffset={`${502 - Math.round(ratio * 502)}`}
+                    strokeDashoffset={`${502 - Math.round(progress * 502)}`}
                 />
             </svg>
-            <div>{Math.round(ratio * 100)} %</div>
+            <div>{Math.round(progress * 100)} %</div>
         </div>
     );
 }

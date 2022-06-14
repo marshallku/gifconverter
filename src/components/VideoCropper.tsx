@@ -34,8 +34,6 @@ export default class VideoCropper extends React.Component<
                 left: 0,
             },
         };
-
-        window.videoCropper = this;
     }
 
     componentDidMount = () => {

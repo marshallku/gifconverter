@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
+import { useProgress } from "../store";
 import FilePicker from "./FilePicker";
 import DisplayProgress from "./DisplayProgress";
 import DisplayOutput from "./DisplayOutput";
@@ -9,28 +10,14 @@ import DownloadButton from "./DownloadButton";
 import ConvertOptions from "./ConvertOptions";
 import "./App.css";
 
-const ffmpeg: FFmpeg = createFFmpeg({ progress: progressRatio });
+const ffmpeg: FFmpeg = createFFmpeg({
+    progress: ({ ratio }) => {
+        const { setProgress } = useProgress.getState();
 
-declare global {
-    interface Window {
-        setRatio: React.Dispatch<React.SetStateAction<number>>;
-        videoCropper: React.Component<VideoCropperProps, VideoCropperStates>;
-    }
-}
-
-function progressRatio({
-    duration,
-    ratio,
-}: {
-    duration?: number;
-    ratio: number;
-}) {
-    if (duration) {
-        return;
-    }
-
-    window.setRatio(ratio);
-}
+        console.log(ratio);
+        setProgress(Math.max(0, ratio));
+    },
+});
 
 function App() {
     const [loadable, setLoadable] = useState<boolean>(
