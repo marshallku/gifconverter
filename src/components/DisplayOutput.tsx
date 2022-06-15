@@ -55,7 +55,7 @@ export default function DisplayOutput({ input, output }: DisplayOutputProps) {
                         playsInline
                         muted
                         loop
-                    ></video>
+                    />
                 }
                 Output={<img className="output__file" src={url} />}
             />
@@ -73,7 +73,7 @@ export default function DisplayOutput({ input, output }: DisplayOutputProps) {
                     playsInline
                     muted
                     loop
-                ></video>
+                />
             }
         />
     );

@@ -185,7 +185,7 @@ export default class ConvertOptions extends React.Component<
                             loop
                             controls
                             draggable="false"
-                        ></video>
+                        />
                         {!!video && (
                             <VideoCropper
                                 video={video}

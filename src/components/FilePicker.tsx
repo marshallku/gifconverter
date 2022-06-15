@@ -77,7 +77,7 @@ export default function FilePicker({ updateFile }: FilePickerProps) {
                     fill={displayInvalid ? "#dc3545" : "#000000"}
                     viewBox="0 0 256 256"
                 >
-                    <circle cx="155.99951" cy="100" r="12"></circle>
+                    <circle cx="155.99951" cy="100" r="12" />
                     <rect
                         x="32"
                         y="48"
@@ -89,7 +89,7 @@ export default function FilePicker({ updateFile }: FilePickerProps) {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         fill="none"
-                    ></rect>
+                    />
                     <polyline
                         points="32 168 88 112 144 168 176 136 224 184"
                         fill="none"
@@ -97,7 +97,7 @@ export default function FilePicker({ updateFile }: FilePickerProps) {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="16"
-                    ></polyline>
+                    />
                 </svg>
                 <div>
                     {displayInvalid
