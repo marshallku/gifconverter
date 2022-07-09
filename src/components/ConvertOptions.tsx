@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { ChangeEvent, Component, SyntheticEvent, useState } from "react";
 import fcls from "../utils/fcls";
 import VideoCropper from "./VideoCropper";
 import "./ConvertOptions.css";
@@ -13,7 +13,7 @@ function OptionInput({
 }: OptionInputProps) {
     const [value, setValue] = useState<string>(_value);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
 
         setValue(value);
@@ -67,7 +67,7 @@ function OptionInput({
     );
 }
 
-export default class ConvertOptions extends React.Component<
+export default class ConvertOptions extends Component<
     ConvertOptionsProps,
     ConvertOptionsStates
 > {
@@ -102,9 +102,7 @@ export default class ConvertOptions extends React.Component<
         URL.revokeObjectURL(this.state.inputBlobUrl);
     }
 
-    handleVideoLoad = (
-        event: React.SyntheticEvent<HTMLVideoElement, Event>
-    ) => {
+    handleVideoLoad = (event: SyntheticEvent<HTMLVideoElement, Event>) => {
         if (this.state.video) return;
         const video = event.target as HTMLVideoElement;
         const checkReadyState = () => {

@@ -1,4 +1,9 @@
-import React, { useEffect } from "react";
+import {
+    DetailedHTMLProps,
+    ImgHTMLAttributes,
+    useEffect,
+    VideoHTMLAttributes,
+} from "react";
 import convertData from "../utils/convertFileSize";
 import "./DisplayOutput.css";
 
@@ -7,11 +12,11 @@ export default function DisplayOutput({ input, output }: DisplayOutputProps) {
     const { blob, url } = output;
 
     function Output<
-        T extends React.DetailedHTMLProps<
-            React.ImgHTMLAttributes<HTMLImageElement>,
+        T extends DetailedHTMLProps<
+            ImgHTMLAttributes<HTMLImageElement>,
             | HTMLImageElement
-            | React.DetailedHTMLProps<
-                  React.VideoHTMLAttributes<HTMLVideoElement>,
+            | DetailedHTMLProps<
+                  VideoHTMLAttributes<HTMLVideoElement>,
                   HTMLVideoElement
               >
         >

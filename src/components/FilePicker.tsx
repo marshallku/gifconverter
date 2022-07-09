@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { ChangeEvent, DragEvent, useState } from "react";
 import fcls from "../utils/fcls";
 import "./FilePicker.css";
 
@@ -24,7 +24,7 @@ export default function FilePicker({ updateFile }: FilePickerProps) {
         checkType(type) && updateFile(file, type);
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { files } = event.target;
 
         if (!files || !files.length) {
@@ -34,7 +34,7 @@ export default function FilePicker({ updateFile }: FilePickerProps) {
         checkAndUpdateFile(files[0]);
     };
 
-    const handleDrop = (event: React.DragEvent) => {
+    const handleDrop = (event: DragEvent) => {
         event.preventDefault();
 
         const { files } = event.dataTransfer;

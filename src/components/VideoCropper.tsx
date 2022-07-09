@@ -1,7 +1,7 @@
-import React from "react";
+import { Component, MouseEvent, TouchEvent } from "react";
 import "./VideoCropper.css";
 
-export default class VideoCropper extends React.Component<
+export default class VideoCropper extends Component<
     VideoCropperProps,
     VideoCropperStates
 > {
@@ -52,11 +52,7 @@ export default class VideoCropper extends React.Component<
         }, 100);
     }
 
-    handleMouseDown(
-        event: React.MouseEvent,
-        positionX: string,
-        positionY: string
-    ) {
+    handleMouseDown(event: MouseEvent, positionX: string, positionY: string) {
         const { top, right, bottom, left } = this.state;
         const startPosition = {
             x: event.clientX,
@@ -73,11 +69,7 @@ export default class VideoCropper extends React.Component<
         this.setResizingMode("mouse", positionX, positionY);
     }
 
-    handleTouchStart(
-        event: React.TouchEvent,
-        positionX: string,
-        positionY: string
-    ) {
+    handleTouchStart(event: TouchEvent, positionX: string, positionY: string) {
         const { top, right, bottom, left } = this.state;
         const startPosition = {
             x: event.touches[0].clientX,
