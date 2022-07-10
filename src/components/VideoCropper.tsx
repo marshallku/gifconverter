@@ -1,4 +1,5 @@
 import { Component, MouseEvent, TouchEvent } from "react";
+import { useOption } from "../store";
 import "./VideoCropper.css";
 
 export default class VideoCropper extends Component<
@@ -390,8 +391,9 @@ export default class VideoCropper extends Component<
 
     updateOption() {
         const { top, right, bottom, left } = this.state;
+        const { setSize } = useOption();
 
-        this.props.setSize({ top, right, bottom, left });
+        setSize({ top, right, bottom, left });
     }
 
     render() {
