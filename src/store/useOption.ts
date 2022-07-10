@@ -11,10 +11,10 @@ const useOption = create<OptionStore>((set) => ({
         set((state) => ({ ...state, size }));
     },
     option: {
-        startTime: "",
-        endTime: "",
-        scale: "",
-        fps: "",
+        startTime: "0",
+        endTime: "0",
+        scale: "0",
+        fps: "25",
     },
     setOption(option) {
         set((state) => ({ ...state, option }));
