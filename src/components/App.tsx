@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
-import { useProgress } from "../store";
+import { useOption, useProgress } from "../store";
 import getFileExtension from "../utils/getFileExtension";
 import FilePicker from "./FilePicker";
 import DisplayProgress from "./DisplayProgress";
@@ -21,6 +21,7 @@ const ffmpeg: FFmpeg = createFFmpeg({
 });
 
 function App() {
+    const { option, setOption } = useOption();
     const [loadable, setLoadable] = useState<boolean>(
         !!window.SharedArrayBuffer
     );
@@ -31,12 +32,6 @@ function App() {
     }>();
     const [output, setOutput] = useState<Output>();
     const [converting, setConverting] = useState<boolean>(false);
-    const [gifOption, setGifOption] = useState<GifOption>({
-        startTime: "0",
-        endTime: "0",
-        scale: "0",
-        fps: "25",
-    });
 
     const load = async () => {
         if (!loadable) {
@@ -96,7 +91,7 @@ function App() {
         }
 
         // convert video to gif
-        const { startTime, endTime, scale, fps, crop } = gifOption;
+        const { startTime, endTime, scale, fps, crop } = option;
         const extension = getFileExtension(file.name) || "mp4";
 
         ffmpeg.FS("writeFile", `input.${extension}`, await fetchFile(file));
@@ -136,7 +131,7 @@ function App() {
     };
 
     const reset = () => {
-        setGifOption({
+        setOption({
             startTime: "0",
             endTime: "0",
             scale: "0",
@@ -196,8 +191,6 @@ function App() {
                         input={input.file}
                         preConvert={setConverting}
                         convert={convertFile}
-                        gifOption={gifOption}
-                        setGifOption={setGifOption}
                     />
                 )
             ) : (

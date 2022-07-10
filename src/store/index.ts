@@ -1,3 +1,4 @@
+import useOption from "./useOption";
 import useProgress from "./useProgress";
 
-export { useProgress };
+export { useOption, useProgress };

@@ -1,33 +1,32 @@
-import { ChangeEvent, Component, SyntheticEvent, useState } from "react";
+import {
+    ChangeEvent,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
+import { useOption } from "../store";
 import fcls from "../utils/fcls";
 import VideoCropper from "./VideoCropper";
 import "./ConvertOptions.css";
 
-function OptionInput({
-    video,
-    value: _value,
-    onUpdate,
-    option,
-    min,
-    max,
-}: OptionInputProps) {
-    const [value, setValue] = useState<string>(_value);
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-
-        setValue(value);
-        onUpdate(option, value);
-    };
-
-    const handleClick = () => {
-        if (video) {
-            const { currentTime } = video;
-
-            setValue(`${currentTime}`);
-            onUpdate(option, `${currentTime}`);
+function OptionInput({ optionKey, video, min, max }: OptionInputProps) {
+    const { option, setIndividualOption } = useOption();
+    const handleChange = useCallback(
+        ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+            setIndividualOption(optionKey, value);
+        },
+        []
+    );
+    const handleClick = useCallback(() => {
+        if (!video) {
+            return;
         }
-    };
+
+        const { currentTime } = video;
+
+        setIndividualOption(optionKey, `${currentTime}`);
+    }, [video]);
 
     return (
         <div>
@@ -35,9 +34,9 @@ function OptionInput({
                 type="number"
                 min={min}
                 max={max}
-                value={value}
+                value={option[optionKey]}
                 onChange={handleChange}
-                step={`${option.includes("Time") ? 0.01 : 1}`}
+                step={`${optionKey.includes("Time") ? 0.01 : 1}`}
             />
             {!!video && (
                 <button onClick={handleClick} title="Current Time">
@@ -67,216 +66,174 @@ function OptionInput({
     );
 }
 
-export default class ConvertOptions extends Component<
-    ConvertOptionsProps,
-    ConvertOptionsStates
-> {
-    options: GifOption;
-    size: Size;
-    constructor(props: ConvertOptionsProps) {
-        super(props);
+export default function ConvertOptions({
+    input,
+    convert,
+    preConvert,
+}: ConvertOptionsProps) {
+    const { option, size, setSize, setIndividualOption } = useOption();
+    // It won't be updated
+    const [inputBlobUrl, setInputBlobUrl] = useState(
+        URL.createObjectURL(input)
+    );
+    const [video, setVideo] = useState<HTMLVideoElement>();
+    const handleVideoLoad = useCallback(
+        ({ target }: SyntheticEvent<HTMLVideoElement, Event>) => {
+            console.log("hi");
+            const loadedVideo = target as HTMLVideoElement;
+            const checkReadyState = () => {
+                if (loadedVideo.readyState !== 4) {
+                    window.requestAnimationFrame(checkReadyState);
+                    return;
+                }
 
-        const { gifOption } = this.props;
+                setIndividualOption("endTime", `${loadedVideo.duration}`);
+                setIndividualOption("scale", `${loadedVideo.offsetWidth}`);
+                setVideo(loadedVideo);
+            };
 
-        this.options = {
-            startTime: gifOption.startTime,
-            endTime: gifOption.endTime,
-            fps: gifOption.fps,
-            scale: gifOption.scale,
+            checkReadyState();
+        },
+        []
+    );
+
+    useEffect(() => {
+        setInputBlobUrl(URL.createObjectURL(input));
+
+        return () => {
+            URL.revokeObjectURL(inputBlobUrl);
         };
+    }, [input]);
 
-        this.size = {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-        };
-
-        this.state = {
-            inputBlobUrl: URL.createObjectURL(this.props.input),
-            video: null,
-        };
-    }
-
-    componentWillUnmount() {
-        URL.revokeObjectURL(this.state.inputBlobUrl);
-    }
-
-    handleVideoLoad = (event: SyntheticEvent<HTMLVideoElement, Event>) => {
-        if (this.state.video) return;
-        const video = event.target as HTMLVideoElement;
-        const checkReadyState = () => {
-            if (video.readyState === 4) {
-                this.options.endTime = `${video.duration}`;
-                this.options.scale = `${video.offsetWidth}`;
-
-                this.setState({
-                    video: video,
-                });
-            } else {
-                requestAnimationFrame(checkReadyState);
-            }
-        };
-
-        checkReadyState();
-    };
-
-    updateOption = (option: OptionField, value: string) => {
-        this.options[option] = value;
-    };
-
-    setSize = (size: Size) => {
-        this.size = size;
-    };
-
-    convert = () => {
-        const { startTime, endTime } = this.options;
-
-        if (startTime >= endTime || endTime === "0") {
-            return;
-        }
-
-        const { video } = this.state;
-
-        if (video) {
-            // Get Exact size
-            const { top, right, bottom, left } = this.size;
-
-            if (top + right + bottom + left) {
-                const videoScale = video.videoWidth / video.offsetWidth;
-
-                this.size.top = top * videoScale;
-                this.size.right = right * videoScale;
-                this.size.bottom = bottom * videoScale;
-                this.size.left = left * videoScale;
-
-                this.options.crop = `${
-                    video.videoWidth - this.size.left - this.size.right
-                }:${video.videoHeight - this.size.top - this.size.bottom}:${
-                    this.size.left
-                }:${this.size.top}`;
-            }
-
-            this.props.setGifOption(this.options);
-
-            setTimeout(() => {
-                this.props.preConvert(true);
-                this.props.convert();
-            }, 0);
-        }
-    };
-
-    render() {
-        const { startTime, endTime, fps, scale } = this.options;
-        const { video, inputBlobUrl } = this.state;
-
-        return (
-            <>
-                <div className={fcls("option", video && "loaded")}>
-                    <div className="option__preview">
-                        <video
-                            src={inputBlobUrl}
-                            onLoadedMetadata={this.handleVideoLoad}
-                            autoPlay
-                            playsInline
-                            muted
-                            loop
-                            controls
-                            draggable="false"
-                        />
-                        {!!video && (
-                            <VideoCropper
-                                video={video}
-                                setSize={this.setSize}
-                            />
-                        )}
-                    </div>
-                    {!!video && (
-                        <>
-                            <div className="option__input">
-                                <div className="title">Start</div>
-                                <OptionInput
-                                    value={startTime}
-                                    min="0"
-                                    max={endTime}
-                                    option="startTime"
-                                    onUpdate={this.updateOption}
-                                    video={video}
-                                />
-                            </div>
-                            <div className="option__input">
-                                <div className="title">End</div>
-                                <OptionInput
-                                    value={endTime}
-                                    min="0"
-                                    max={endTime}
-                                    option="endTime"
-                                    onUpdate={this.updateOption}
-                                    video={video}
-                                />
-                            </div>
-                            <div className="option__input">
-                                <div className="title">FPS</div>
-                                <OptionInput
-                                    min="1"
-                                    value={fps}
-                                    option="fps"
-                                    onUpdate={this.updateOption}
-                                />
-                            </div>
-                            <div className="option__input">
-                                <div className="title">Size (width)</div>
-                                <OptionInput
-                                    min="1"
-                                    value={scale}
-                                    max={scale}
-                                    option="scale"
-                                    onUpdate={this.updateOption}
-                                />
-                            </div>
-                            <button>
-                                <svg
-                                    width="30"
-                                    height="30"
-                                    viewBox="0 0 256 256"
-                                    className="option__convert"
-                                    onClick={this.convert}
-                                >
-                                    <circle
-                                        cx="128"
-                                        cy="128"
-                                        r="96"
-                                        fill="none"
-                                        stroke="#000"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="24"
-                                    />
-                                    <polyline
-                                        points="134.059 161.941 168 128 134.059 94.059"
-                                        fill="none"
-                                        stroke="#000"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="24"
-                                    />
-                                    <line
-                                        x1="88"
-                                        y1="128"
-                                        x2="168"
-                                        y2="128"
-                                        fill="none"
-                                        stroke="#000"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="24"
-                                    />
-                                </svg>
-                            </button>
-                        </>
-                    )}
+    return (
+        <>
+            <div className={fcls("option", video && "loaded")}>
+                <div className="option__preview">
+                    <video
+                        src={inputBlobUrl}
+                        onLoadedMetadata={handleVideoLoad}
+                        autoPlay
+                        playsInline
+                        muted
+                        loop
+                        controls
+                        draggable="false"
+                    />
+                    {!!video && <VideoCropper video={video} />}
                 </div>
-            </>
-        );
-    }
+                {!!video && (
+                    <>
+                        <div className="option__input">
+                            <div className="title">Start</div>
+                            <OptionInput
+                                min="0"
+                                max={option.endTime}
+                                optionKey="startTime"
+                                video={video}
+                            />
+                        </div>
+                        <div className="option__input">
+                            <div className="title">End</div>
+                            <OptionInput
+                                min="0"
+                                max={option.endTime}
+                                optionKey="endTime"
+                                video={video}
+                            />
+                        </div>
+                        <div className="option__input">
+                            <div className="title">FPS</div>
+                            <OptionInput min="1" optionKey="fps" />
+                        </div>
+                        <div className="option__input">
+                            <div className="title">Size (width)</div>
+                            <OptionInput
+                                min="1"
+                                max={option.scale}
+                                optionKey="scale"
+                            />
+                        </div>
+                        <button
+                            onClick={() => {
+                                const { startTime, endTime } = option;
+
+                                if (startTime >= endTime || endTime === "0") {
+                                    return;
+                                }
+
+                                if (video) {
+                                    // Get Exact size
+                                    const { top, right, bottom, left } = size;
+
+                                    if (top + right + bottom + left) {
+                                        const videoScale =
+                                            video.videoWidth /
+                                            video.offsetWidth;
+
+                                        setSize({
+                                            top: top * videoScale,
+                                            right: right * videoScale,
+                                            bottom: bottom * videoScale,
+                                            left: left * videoScale,
+                                        });
+
+                                        setIndividualOption(
+                                            "crop",
+                                            `${
+                                                video.videoWidth - left - right
+                                            }:${
+                                                video.videoHeight - top - bottom
+                                            }:${left}:${top}`
+                                        );
+                                    }
+
+                                    setTimeout(() => {
+                                        preConvert(true);
+                                        convert();
+                                    }, 0);
+                                }
+                            }}
+                        >
+                            <svg
+                                width="30"
+                                height="30"
+                                viewBox="0 0 256 256"
+                                className="option__convert"
+                            >
+                                <circle
+                                    cx="128"
+                                    cy="128"
+                                    r="96"
+                                    fill="none"
+                                    stroke="#000"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="24"
+                                />
+                                <polyline
+                                    points="134.059 161.941 168 128 134.059 94.059"
+                                    fill="none"
+                                    stroke="#000"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="24"
+                                />
+                                <line
+                                    x1="88"
+                                    y1="128"
+                                    x2="168"
+                                    y2="128"
+                                    fill="none"
+                                    stroke="#000"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="24"
+                                />
+                            </svg>
+                        </button>
+                    </>
+                )}
+            </div>
+        </>
+    );
 }

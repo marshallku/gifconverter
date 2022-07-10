@@ -1,6 +1,5 @@
 interface VideoCropperProps {
     video: HTMLVideoElement;
-    setSize: (size: Size) => void;
 }
 
 interface Size {
