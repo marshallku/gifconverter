@@ -4,9 +4,11 @@ export default function convertData(byte: number) {
 
     if (byte > MB) {
         return `${(byte / MB).toFixed(3)} MB`;
-    } else if (byte > KB) {
-        return `${(byte / KB).toFixed(3)} KB`;
-    } else {
-        return `${byte.toFixed(3)} B`;
     }
+
+    if (byte > KB) {
+        return `${(byte / KB).toFixed(3)} KB`;
+    }
+
+    return `${byte.toFixed(3)} B`;
 }
