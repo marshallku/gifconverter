@@ -1,57 +1,50 @@
-import {
-    DetailedHTMLProps,
-    ImgHTMLAttributes,
-    useEffect,
-    VideoHTMLAttributes,
-} from "react";
+import { useEffect, useMemo } from "react";
 import convertData from "../utils/convertFileSize";
 import "./DisplayOutput.css";
 
-export default function DisplayOutput({ input, output }: DisplayOutputProps) {
-    const inputBlobUrl = URL.createObjectURL(input);
-    const { blob, url } = output;
+function Output<T extends MediaProps>({
+    Input,
+    Output,
+    input,
+    output,
+}: OutputProps<T>) {
+    return (
+        <figure className="output">
+            <ul>
+                <li>
+                    <>
+                        <h2>Original</h2>
+                        {Input}
+                        <figcaption>{convertData(input.size)}</figcaption>
+                    </>
+                </li>
+                <li>
+                    <>
+                        <h2>Converted</h2>
+                        {Output}
+                        <figcaption>{convertData(output.blob.size)}</figcaption>
+                    </>
+                </li>
+            </ul>
+        </figure>
+    );
+}
 
-    function Output<
-        T extends DetailedHTMLProps<
-            ImgHTMLAttributes<HTMLImageElement>,
-            | HTMLImageElement
-            | DetailedHTMLProps<
-                  VideoHTMLAttributes<HTMLVideoElement>,
-                  HTMLVideoElement
-              >
-        >
-    >({ Input, Output }: { Input: T; Output: T }) {
-        return (
-            <figure className="output">
-                <ul>
-                    <li>
-                        <>
-                            <h2>Original</h2>
-                            {Input}
-                            <figcaption>{convertData(input.size)}</figcaption>
-                        </>
-                    </li>
-                    <li>
-                        <>
-                            <h2>Converted</h2>
-                            {Output}
-                            <figcaption>{convertData(blob.size)}</figcaption>
-                        </>
-                    </li>
-                </ul>
-            </figure>
-        );
-    }
+export default function DisplayOutput({ input, output }: DisplayOutputProps) {
+    const inputBlobUrl = useMemo(() => URL.createObjectURL(input), [input]);
+    const { blob, url } = output;
 
     useEffect(() => {
         return () => {
             URL.revokeObjectURL(inputBlobUrl);
         };
-    }, []);
+    }, [inputBlobUrl]);
 
     if (blob.type === "image/gif") {
         return (
             <Output
+                input={input}
+                output={output}
                 Input={
                     <video
                         className="output__file"
@@ -69,6 +62,8 @@ export default function DisplayOutput({ input, output }: DisplayOutputProps) {
 
     return (
         <Output
+            input={input}
+            output={output}
             Input={<img className="output__file" src={inputBlobUrl} />}
             Output={
                 <video
