@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import convertData from "../utils/convertFileSize";
+import convertData from "../utils/convertData";
 import "./DisplayOutput.css";
 
 function Output<T extends MediaProps>({
