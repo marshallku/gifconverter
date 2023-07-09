@@ -5,10 +5,10 @@ import {
     useEffect,
     useState,
 } from "react";
-import { useOption } from "../store";
-import fcls from "../utils/fcls";
-import VideoCropper from "./VideoCropper";
-import "./ConvertOptions.css";
+import { useOption } from "@store";
+import { VideoCropper } from "@components";
+import { fcls } from "@utils";
+import "./index.css";
 
 function OptionInput({ optionKey, video, min, max }: OptionInputProps) {
     const { option, setIndividualOption } = useOption();

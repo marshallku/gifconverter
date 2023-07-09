@@ -1,5 +1,5 @@
-import formatFileName from "../utils/formatFileName";
-import "./DownloadButton.css";
+import { formatFileName } from "@utils";
+import "./index.css";
 
 export default function DownloadButton({
     outputUrl,

@@ -1,6 +1,6 @@
 import { Component, MouseEvent, TouchEvent } from "react";
-import { useOption } from "../store";
-import "./VideoCropper.css";
+import { useOption } from "@store";
+import "./index.css";
 
 export default class VideoCropper extends Component<
     VideoCropperProps,
