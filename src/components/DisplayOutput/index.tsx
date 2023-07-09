@@ -55,7 +55,9 @@ export default function DisplayOutput({ input, output }: DisplayOutputProps) {
                         loop
                     />
                 }
-                Output={<img className="output__file" src={url} />}
+                Output={
+                    <img className="output__file" src={url} alt="컨버팅 결과" />
+                }
             />
         );
     }
@@ -64,7 +66,13 @@ export default function DisplayOutput({ input, output }: DisplayOutputProps) {
         <Output
             input={input}
             output={output}
-            Input={<img className="output__file" src={inputBlobUrl} />}
+            Input={
+                <img
+                    className="output__file"
+                    src={inputBlobUrl}
+                    alt="입력 파일"
+                />
+            }
             Output={
                 <video
                     className="output__file"
