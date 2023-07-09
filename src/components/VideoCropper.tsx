@@ -360,7 +360,11 @@ export default class VideoCropper extends Component<
         };
         this.startPosition = startPosition;
 
-        if (event.nativeEvent instanceof TouchEvent) {
+        const {
+            nativeEvent: { type: eventType },
+        } = event;
+
+        if (eventType.includes("touch")) {
             document.addEventListener("touchmove", this.moveBox, {
                 passive: true,
             });
@@ -373,7 +377,7 @@ export default class VideoCropper extends Component<
                 },
                 { once: true }
             );
-        } else if (event.nativeEvent instanceof MouseEvent) {
+        } else if (eventType.includes("mouse")) {
             document.addEventListener("mousemove", this.moveBox, {
                 passive: true,
             });
@@ -391,7 +395,7 @@ export default class VideoCropper extends Component<
 
     updateOption() {
         const { top, right, bottom, left } = this.state;
-        const { setSize } = useOption();
+        const { setSize } = useOption.getState();
 
         setSize({ top, right, bottom, left });
     }

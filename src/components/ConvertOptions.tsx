@@ -79,7 +79,6 @@ export default function ConvertOptions({
     const [video, setVideo] = useState<HTMLVideoElement>();
     const handleVideoLoad = useCallback(
         ({ target }: SyntheticEvent<HTMLVideoElement, Event>) => {
-            console.log("hi");
             const loadedVideo = target as HTMLVideoElement;
             const checkReadyState = () => {
                 if (loadedVideo.readyState !== 4) {

@@ -91,7 +91,9 @@ function App() {
         }
 
         // convert video to gif
-        const { startTime, endTime, scale, fps, crop } = option;
+        const {
+            option: { startTime, endTime, scale, fps, crop },
+        } = useOption.getState();
         const extension = getFileExtension(file.name) || "mp4";
 
         ffmpeg.FS("writeFile", `input.${extension}`, await fetchFile(file));
