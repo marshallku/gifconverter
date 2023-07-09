@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { createFFmpeg, fetchFile, FFmpeg } from "@ffmpeg/ffmpeg";
-import { useOption, useProgress } from "../store";
-import getFileExtension from "../utils/getFileExtension";
-import FilePicker from "./FilePicker";
-import DisplayProgress from "./DisplayProgress";
-import DisplayOutput from "./DisplayOutput";
-import ResetButton from "./ResetButton";
-import Loader from "./Loader";
-import DownloadButton from "./DownloadButton";
-import ConvertOptions from "./ConvertOptions";
-import "./App.css";
+import { useOption, useProgress } from "@store";
+import {
+    FilePicker,
+    DisplayProgress,
+    DisplayOutput,
+    ResetButton,
+    ConvertOptions,
+    DownloadButton,
+    Loader,
+} from "@components";
+import { getFileExtension } from "@utils";
+import "./index.css";
 
 const ffmpeg: FFmpeg = createFFmpeg({
     progress: ({ ratio }) => {

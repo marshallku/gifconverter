@@ -1,5 +1,5 @@
-import { useProgress } from "../store";
-import "./DisplayProgress.css";
+import { useProgress } from "@store";
+import "./index.css";
 
 export default function DisplayProgress() {
     const { progress } = useProgress();

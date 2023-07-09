@@ -1,6 +1,6 @@
 import { ChangeEvent, DragEvent, useState } from "react";
-import fcls from "../utils/fcls";
-import "./FilePicker.css";
+import { fcls } from "@utils";
+import "./index.css";
 
 export default function FilePicker({ updateFile }: FilePickerProps) {
     const [displayInvalid, setDisplayInvalid] = useState(false);

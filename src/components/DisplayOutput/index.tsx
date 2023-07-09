@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
-import convertData from "../utils/convertData";
-import "./DisplayOutput.css";
+import { convertData } from "@utils";
+import "./index.css";
 
 function Output<T extends MediaProps>({
     Input,

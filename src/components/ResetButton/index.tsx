@@ -1,4 +1,4 @@
-import "./ResetButton.css";
+import "./index.css";
 
 export default function ResetButton({ reset }: ResetButtonProps) {
     return (
