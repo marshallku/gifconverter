@@ -26,6 +26,7 @@
         "@ffmpeg/ffmpeg": "^0.10.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
+        "vite-tsconfig-paths": "^4.2.0",
         "zustand": "^4.0.0-rc.1"
     },
     "devDependencies": {
