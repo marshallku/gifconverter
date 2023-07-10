@@ -1,0 +1,12 @@
+name: Build test
+
+on:
+    push:
+        branches:
+            - "!master"
+    workflow_dispatch:
+
+jobs:
+    build:
+        name: "Build"
+        uses: marshallku/gifconverter/.github/workflows/build.yml@master
